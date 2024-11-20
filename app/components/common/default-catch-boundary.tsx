@@ -6,6 +6,7 @@ import {
 	useMatch,
 	useRouter,
 } from "@tanstack/react-router";
+import { Flex } from "styled-system/jsx";
 
 export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 	const router = useRouter();
@@ -18,9 +19,17 @@ export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 	console.error("DefaultCatchBoundary Error:", error);
 
 	return (
-		<div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-6 p-4">
+		<Flex
+			p={4}
+			gap={6}
+			minWidth={0}
+			flexDirection="column"
+			flex="1 1 0%"
+			justifyContent="center"
+			alignItems="center"
+		>
 			<ErrorComponent error={error} />
-			<div className="flex flex-wrap items-center gap-2">
+			<Flex flexWrap="wrap" alignItems="center" gap={2}>
 				<button
 					type="button"
 					onClick={() => router.invalidate()}
@@ -47,7 +56,7 @@ export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 						Go Back
 					</Link>
 				)}
-			</div>
-		</div>
+			</Flex>
+		</Flex>
 	);
 };

@@ -4,6 +4,7 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
+		"prepare": "panda codegen",
 		"dev": "vinxi dev",
 		"build": "vinxi build",
 		"start": "vinxi start"
@@ -17,10 +18,11 @@
 		"vinxi": "0.4.3"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@pandacss/dev": "^0.48.0",
 		"@types/node": "^22.9.1",
 		"@types/react": "^18.3.12",
 		"@types/react-dom": "^18.3.1",
-		"@biomejs/biome": "1.9.4",
 		"typescript": "^5.6.3",
 		"vite-tsconfig-paths": "^5.1.3"
 	}
