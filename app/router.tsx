@@ -1,8 +1,9 @@
+import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { routerWithQueryClient } from "@tanstack/react-router-with-query";
-import { ConvexProvider } from "convex/react";
+import { ConvexReactClient } from "convex/react";
 import { DefaultCatchBoundary } from "./components/common/default-catch-boundary";
 import { NotFound } from "./components/common/not-found";
 import { routeTree } from "./routeTree.gen";
@@ -14,7 +15,8 @@ export function createRouter() {
 		throw new Error("missing envar VITE_CONVEX_URL");
 	}
 
-	const convexQueryClient = new ConvexQueryClient(CONVEX_URL);
+	const convex = new ConvexReactClient(CONVEX_URL);
+	const convexQueryClient = new ConvexQueryClient(convex);
 
 	const queryClient = new QueryClient({
 		defaultOptions: {
@@ -34,9 +36,9 @@ export function createRouter() {
 			defaultErrorComponent: DefaultCatchBoundary,
 			defaultNotFoundComponent: () => <NotFound />,
 			Wrap: ({ children }) => (
-				<ConvexProvider client={convexQueryClient.convexClient}>
+				<ConvexAuthProvider client={convexQueryClient.convexClient}>
 					{children}
-				</ConvexProvider>
+				</ConvexAuthProvider>
 			),
 		}),
 		queryClient,
