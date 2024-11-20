@@ -1,7 +1,8 @@
+import type { QueryClient } from "@tanstack/react-query";
 import {
+	createRootRouteWithContext,
 	Outlet,
 	ScrollRestoration,
-	createRootRoute,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
@@ -35,7 +36,11 @@ export const RootComponent = () => {
 	);
 };
 
-export const Route = createRootRoute({
+type RouteContext = {
+	queryClient: QueryClient;
+};
+
+export const Route = createRootRouteWithContext<RouteContext>()({
 	head: () => ({
 		meta: [
 			{
