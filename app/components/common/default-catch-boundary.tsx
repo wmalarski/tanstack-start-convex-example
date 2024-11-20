@@ -7,6 +7,8 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { Flex } from "styled-system/jsx";
+import { button } from "styled-system/recipes";
+import { Button } from "../ui/button";
 
 export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 	const router = useRouter();
@@ -30,24 +32,21 @@ export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 		>
 			<ErrorComponent error={error} />
 			<Flex flexWrap="wrap" alignItems="center" gap={2}>
-				<button
+				<Button
 					type="button"
 					onClick={() => router.invalidate()}
-					className="rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700"
+					variant="link"
 				>
 					Try Again
-				</button>
+				</Button>
 				{isRoot ? (
-					<Link
-						to="/"
-						className="rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700"
-					>
+					<Link to="/" className={button()}>
 						Home
 					</Link>
 				) : (
 					<Link
 						to="/"
-						className="rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700"
+						className={button()}
 						onClick={(event) => {
 							event.preventDefault();
 							window.history.back();
