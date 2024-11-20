@@ -4,7 +4,6 @@ interface ImportMetaEnv {
 	readonly CONVEX_DEPLOYMENT: string;
 }
 
-// biome-ignore lint/correctness/noUnusedVariables: This is global override
 interface ImportMeta {
 	readonly env: ImportMetaEnv;
 }
