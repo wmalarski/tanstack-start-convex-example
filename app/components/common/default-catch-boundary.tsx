@@ -7,8 +7,9 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 
-export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
+export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 	const router = useRouter();
+
 	const isRoot = useMatch({
 		strict: false,
 		select: (state) => state.id === rootRouteId,
@@ -38,7 +39,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
 					<Link
 						to="/"
 						className="rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700"
-						onClick={(event: Event) => {
+						onClick={(event) => {
 							event.preventDefault();
 							window.history.back();
 						}}
@@ -49,4 +50,4 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
 			</div>
 		</div>
 	);
-}
+};

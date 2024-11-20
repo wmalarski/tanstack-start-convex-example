@@ -1,16 +1,39 @@
 import {
-	Link,
 	Outlet,
 	ScrollRestoration,
 	createRootRoute,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
-import type * as React from "react";
+import type { PropsWithChildren } from "react";
 import { DefaultCatchBoundary } from "~/components/common/default-catch-boundary";
 import { NotFound } from "~/components/common/not-found";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
+
+export const RootDocument = ({ children }: PropsWithChildren) => {
+	return (
+		<html lang="en">
+			<head>
+				<Meta />
+			</head>
+			<body>
+				{children}
+				<ScrollRestoration />
+				<TanStackRouterDevtools position="bottom-right" />
+				<Scripts />
+			</body>
+		</html>
+	);
+};
+
+export const RootComponent = () => {
+	return (
+		<RootDocument>
+			<Outlet />
+		</RootDocument>
+	);
+};
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -23,34 +46,11 @@ export const Route = createRootRoute({
 				content: "width=device-width, initial-scale=1",
 			},
 			...seo({
-				title:
-					"TanStack Start | Type-Safe, Client-First, Full-Stack React Framework",
-				description:
-					"TanStack Start is a type-safe, client-first, full-stack React framework.",
+				title: "Tanstack Start Albums",
+				description: "Tanstack Start Albums is a example app.",
 			}),
 		],
-		links: [
-			{ rel: "stylesheet", href: appCss },
-			{
-				rel: "apple-touch-icon",
-				sizes: "180x180",
-				href: "/apple-touch-icon.png",
-			},
-			{
-				rel: "icon",
-				type: "image/png",
-				sizes: "32x32",
-				href: "/favicon-32x32.png",
-			},
-			{
-				rel: "icon",
-				type: "image/png",
-				sizes: "16x16",
-				href: "/favicon-16x16.png",
-			},
-			{ rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
-			{ rel: "icon", href: "/favicon.ico" },
-		],
+		links: [{ rel: "stylesheet", href: appCss }],
 	}),
 	errorComponent: (props) => {
 		return (
@@ -62,80 +62,3 @@ export const Route = createRootRoute({
 	notFoundComponent: () => <NotFound />,
 	component: RootComponent,
 });
-
-function RootComponent() {
-	return (
-		<RootDocument>
-			<Outlet />
-		</RootDocument>
-	);
-}
-
-function RootDocument({ children }: { children: React.ReactNode }) {
-	return (
-		// biome-ignore lint/a11y/useHtmlLang: <explanation>
-		<html>
-			<head>
-				<Meta />
-			</head>
-			<body>
-				<div className="flex gap-2 p-2 text-lg">
-					<Link
-						to="/"
-						activeProps={{
-							className: "font-bold",
-						}}
-						activeOptions={{ exact: true }}
-					>
-						Home
-					</Link>{" "}
-					<Link
-						to="/posts"
-						activeProps={{
-							className: "font-bold",
-						}}
-					>
-						Posts
-					</Link>{" "}
-					<Link
-						to="/users"
-						activeProps={{
-							className: "font-bold",
-						}}
-					>
-						Users
-					</Link>{" "}
-					<Link
-						to="/layout-a"
-						activeProps={{
-							className: "font-bold",
-						}}
-					>
-						Layout
-					</Link>{" "}
-					<Link
-						to="/deferred"
-						activeProps={{
-							className: "font-bold",
-						}}
-					>
-						Deferred
-					</Link>{" "}
-					<Link
-						to="/this-route-does-not-exist"
-						activeProps={{
-							className: "font-bold",
-						}}
-					>
-						This Route Does Not Exist
-					</Link>
-				</div>
-				<hr />
-				{children}
-				<ScrollRestoration />
-				<TanStackRouterDevtools position="bottom-right" />
-				<Scripts />
-			</body>
-		</html>
-	);
-}

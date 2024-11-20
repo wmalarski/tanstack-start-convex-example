@@ -1,11 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
-type NotFoundProps = {
-	children?: ReactNode;
-};
-
-export function NotFound({ children }: NotFoundProps) {
+export const NotFound = ({ children }: PropsWithChildren) => {
 	return (
 		<div className="space-y-2 p-2">
 			<div className="text-gray-600 dark:text-gray-400">
@@ -28,4 +24,4 @@ export function NotFound({ children }: NotFoundProps) {
 			</p>
 		</div>
 	);
-}
+};
