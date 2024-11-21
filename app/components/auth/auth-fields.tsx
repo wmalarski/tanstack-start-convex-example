@@ -1,19 +1,32 @@
-import { HStack } from "styled-system/jsx";
-import { Field } from "../ui/field";
+import {
+	FormControl,
+	FormDescription,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
 
 export const AuthFields = () => {
 	return (
-		<HStack gap={2}>
-			<Field.Root>
-				<Field.Label>Email</Field.Label>
-				<Field.Input name="email" type="text" placeholder="Email" />
-				<Field.HelperText>Enter you email</Field.HelperText>
-			</Field.Root>
-			<Field.Root>
-				<Field.Label>Password</Field.Label>
-				<Field.Input name="password" type="password" placeholder="Password" />
-				<Field.HelperText>Enter you password</Field.HelperText>
-			</Field.Root>
-		</HStack>
+		<div className="flex flex-col gap-2">
+			<FormItem>
+				<FormLabel>Email</FormLabel>
+				<FormControl>
+					<Input name="email" type="text" placeholder="Email" />
+				</FormControl>
+				<FormDescription>Enter you email</FormDescription>
+				<FormMessage />
+			</FormItem>
+
+			<FormItem>
+				<FormLabel>Password</FormLabel>
+				<FormControl>
+					<Input name="password" type="password" placeholder="Password" />
+				</FormControl>
+				<FormDescription>Enter you password</FormDescription>
+				<FormMessage />
+			</FormItem>
+		</div>
 	);
 };
