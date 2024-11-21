@@ -5,6 +5,7 @@ yarn.lock
 .DS_Store
 .cache
 .env
+.env.local
 .vercel
 .output
 .vinxi
@@ -21,7 +22,3 @@ yarn.lock
 /blob-report/
 /playwright/.cache/
 
-## Panda
-styled-system
-styled-system-studio
-.env.local
