@@ -1,13 +1,12 @@
 import { useAuthToken } from "@convex-dev/auth/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { css } from "styled-system/css";
 import { TopNavbar } from "~/components/common/top-navbar";
 
 export const Home = () => {
 	const token = useAuthToken();
 
 	return (
-		<div className={css({ p: 2 })}>
+		<div className="p-2">
 			<TopNavbar />
 			<h3>Welcome Home!!!</h3>
 			<Link to="/auth/sign-in">Sign In</Link>

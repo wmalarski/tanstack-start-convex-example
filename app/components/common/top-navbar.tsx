@@ -1,7 +1,6 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { Link } from "@tanstack/react-router";
-import { button } from "styled-system/recipes";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 
 export const TopNavbar = () => {
 	const { signOut } = useAuthActions();
@@ -14,7 +13,7 @@ export const TopNavbar = () => {
 		<nav>
 			<ul>
 				<li>
-					<Link to="/" className={button()}>
+					<Link to="/" className={buttonVariants()}>
 						Albums
 					</Link>
 				</li>

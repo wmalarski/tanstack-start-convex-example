@@ -6,9 +6,7 @@ import {
 	useMatch,
 	useRouter,
 } from "@tanstack/react-router";
-import { Flex } from "styled-system/jsx";
-import { button } from "styled-system/recipes";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 
 export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 	const router = useRouter();
@@ -21,17 +19,9 @@ export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 	console.error("DefaultCatchBoundary Error:", error);
 
 	return (
-		<Flex
-			p={4}
-			gap={6}
-			minWidth={0}
-			flexDirection="column"
-			flex="1 1 0%"
-			justifyContent="center"
-			alignItems="center"
-		>
+		<div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-6 p-4">
 			<ErrorComponent error={error} />
-			<Flex flexWrap="wrap" alignItems="center" gap={2}>
+			<div className="flex flex-wrap items-center gap-2">
 				<Button
 					type="button"
 					onClick={() => router.invalidate()}
@@ -40,13 +30,13 @@ export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 					Try Again
 				</Button>
 				{isRoot ? (
-					<Link to="/" className={button()}>
+					<Link to="/" className={buttonVariants()}>
 						Home
 					</Link>
 				) : (
 					<Link
 						to="/"
-						className={button()}
+						className={buttonVariants()}
 						onClick={(event) => {
 							event.preventDefault();
 							window.history.back();
@@ -55,7 +45,7 @@ export const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 						Go Back
 					</Link>
 				)}
-			</Flex>
-		</Flex>
+			</div>
+		</div>
 	);
 };
