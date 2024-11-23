@@ -18,9 +18,15 @@ export const Home = () => {
 
 export const Route = createFileRoute("/")({
 	component: Home,
-	beforeLoad: (ctx) => {
-		ctx.context.queryClient;
-		// console.log(window.localStorage);
-		// ctx.context.queryClient.fetchQuery()
-	},
+	ssr: false,
+	// beforeLoad: async (ctx) => {
+	// 	// console.log(window.localStorage);
+	// 	// const user = ctx.context.convex.watchQuery(api.auth.queryAuthUser);
+	// 	// ctx.context.convex.query()
+	// 	// user.localQueryResult()
+	// 	// console.log({ user });
+	// 	// if (!user) {
+	// 	// 	throw redirect({ to: "/auth/sign-in" });
+	// 	// }
+	// },
 });

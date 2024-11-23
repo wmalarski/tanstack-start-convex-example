@@ -6,5 +6,15 @@ const SignUp = () => {
 };
 
 export const Route = createFileRoute("/auth/sign-up")({
+	ssr: false,
 	component: SignUp,
+	// beforeLoad: async (ctx) => {
+	// 	const user = await ctx.context.convex.query(api.auth.queryAuthUser);
+
+	// 	console.log({ user });
+
+	// 	if (user) {
+	// 		throw redirect({ to: "/" });
+	// 	}
+	// },
 });

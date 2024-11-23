@@ -8,6 +8,20 @@ import { DefaultCatchBoundary } from "./components/common/default-catch-boundary
 import { NotFound } from "./components/common/not-found";
 import { routeTree } from "./routeTree.gen";
 
+// const createCookieStorage = (): TokenStorage => {
+// 	return {
+// 		getItem(key) {
+// 				//
+// 		},
+// 		removeItem(key) {
+// 				//
+// 		},
+// 		setItem(key, value) {
+// 				//
+// 		},
+// 	}
+// }
+
 export function createRouter() {
 	const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
 
