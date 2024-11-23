@@ -18,7 +18,8 @@ export const Home = () => {
 
 export const Route = createFileRoute("/")({
 	component: Home,
-	beforeLoad: () => {
+	beforeLoad: (ctx) => {
+		ctx.context.queryClient;
 		// console.log(window.localStorage);
 		// ctx.context.queryClient.fetchQuery()
 	},

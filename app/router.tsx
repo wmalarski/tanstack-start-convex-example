@@ -12,7 +12,7 @@ export function createRouter() {
 	const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
 
 	if (!CONVEX_URL) {
-		throw new Error("missing envar VITE_CONVEX_URL");
+		throw new Error("missing env var VITE_CONVEX_URL");
 	}
 
 	const convex = new ConvexReactClient(CONVEX_URL);
@@ -32,14 +32,16 @@ export function createRouter() {
 		createTanStackRouter({
 			routeTree,
 			defaultPreload: "intent",
-			context: { queryClient },
+			context: { queryClient, convex },
 			defaultErrorComponent: DefaultCatchBoundary,
 			defaultNotFoundComponent: () => <NotFound />,
-			Wrap: ({ children }) => (
-				<ConvexAuthProvider client={convexQueryClient.convexClient}>
-					{children}
-				</ConvexAuthProvider>
-			),
+			Wrap: ({ children }) => {
+				return (
+					<ConvexAuthProvider client={convexQueryClient.convexClient}>
+						{children}
+					</ConvexAuthProvider>
+				);
+			},
 		}),
 		queryClient,
 	);
