@@ -1,5 +1,5 @@
 import { useAuthToken } from "@convex-dev/auth/react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { TopNavbar } from "~/components/common/top-navbar";
 
 export const Home = () => {
