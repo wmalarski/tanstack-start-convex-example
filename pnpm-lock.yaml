@@ -62,6 +62,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@4.0.0-beta.2)
+      valibot:
+        specifier: 1.0.0-beta.8
+        version: 1.0.0-beta.8(typescript@5.7.2)
       vinxi:
         specifier: 0.4.3
         version: 0.4.3(@types/node@22.9.3)(ioredis@5.4.1)(lightningcss@1.28.1)(terser@5.36.0)(typescript@5.7.2)
@@ -3531,6 +3534,14 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  valibot@1.0.0-beta.8:
+    resolution: {integrity: sha512-OPAwJZtowb0j91b+bd77+ny7D1VVzsCzD7Jl9waLUlMprTsfI9Y3HHbW3hAQD7wKDKHsmGEesuiYWaYvcZL2wg==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vinxi@0.4.3:
     resolution: {integrity: sha512-RgJz7RWftML5h/qfPsp3QKVc2FSlvV4+HevpE0yEY2j+PS/I2ULjoSsZDXaR8Ks2WYuFFDzQr8yrox7v8aqkng==}
     hasBin: true
@@ -6835,6 +6846,10 @@ snapshots:
       react: 18.3.1
 
   util-deprecate@1.0.2: {}
+
+  valibot@1.0.0-beta.8(typescript@5.7.2):
+    optionalDependencies:
+      typescript: 5.7.2
 
   vinxi@0.4.3(@types/node@22.9.3)(ioredis@5.4.1)(lightningcss@1.28.1)(terser@5.36.0)(typescript@5.7.2):
     dependencies:

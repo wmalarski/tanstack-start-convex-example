@@ -1,4 +1,4 @@
-import { ConvexAuthProvider } from "@convex-dev/auth/react";
+import { ConvexAuthProvider, type TokenStorage } from "@convex-dev/auth/react";
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
@@ -22,7 +22,7 @@ import { routeTree } from "./routeTree.gen";
 // 	}
 // }
 
-export function createRouter() {
+export const createRouter = (storage: TokenStorage) => () => {
 	const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
 
 	if (!CONVEX_URL) {
@@ -51,7 +51,10 @@ export function createRouter() {
 			defaultNotFoundComponent: () => <NotFound />,
 			Wrap: ({ children }) => {
 				return (
-					<ConvexAuthProvider client={convexQueryClient.convexClient}>
+					<ConvexAuthProvider
+						client={convexQueryClient.convexClient}
+						storage={storage}
+					>
 						{children}
 					</ConvexAuthProvider>
 				);
@@ -61,7 +64,7 @@ export function createRouter() {
 	);
 
 	return router;
-}
+};
 
 declare module "@tanstack/react-router" {
 	interface Register {

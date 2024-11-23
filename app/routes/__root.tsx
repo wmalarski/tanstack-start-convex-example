@@ -10,8 +10,8 @@ import type { ConvexReactClient } from "convex/react";
 import type { PropsWithChildren } from "react";
 import { DefaultCatchBoundary } from "~/components/common/default-catch-boundary";
 import { NotFound } from "~/components/common/not-found";
+import { seo } from "~/lib/common/seo";
 import appCss from "~/styles/app.css?url";
-import { seo } from "~/utils/seo";
 
 export const RootDocument = ({ children }: PropsWithChildren) => {
 	return (

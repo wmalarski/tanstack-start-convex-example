@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 import * as React from "react";
 
 import { Label } from "~/components/ui/label";
-import { cn } from "~/utils/cn";
+import { cn } from "~/lib/common/cn";
 
 type FormFieldContextValue = {
 	name: string;

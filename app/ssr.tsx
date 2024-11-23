@@ -5,9 +5,10 @@ import {
 	defaultStreamHandler,
 } from "@tanstack/start/server";
 
+import { serverStorage } from "./lib/auth/server-storage";
 import { createRouter } from "./router";
 
 export default createStartHandler({
-	createRouter,
+	createRouter: createRouter(serverStorage()),
 	getRouterManifest,
 })(defaultStreamHandler);
