@@ -35,9 +35,6 @@ importers:
       '@tanstack/start':
         specifier: ^1.82.6
         version: 1.82.6(@types/node@22.9.3)(ioredis@5.4.1)(lightningcss@1.28.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.36.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.9.3)(lightningcss@1.28.1)(terser@5.36.0))
-      '@xstate/store':
-        specifier: ^2.6.1
-        version: 2.6.1(react@18.3.1)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -1839,17 +1836,6 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0
-
-  '@xstate/store@2.6.1':
-    resolution: {integrity: sha512-Gg+HA5Djf9SA/atd71y5IGGR4SPZHBaPFNwDCJ1juU5ZNIwEYywvnJ1CjX8drXiuphbE83ncfawEe3aeg6/Icw==}
-    peerDependencies:
-      react: ^18.2.0 || ^19.0.0-0
-      solid-js: ^1.7.6
-    peerDependenciesMeta:
-      react:
-        optional: true
-      solid-js:
-        optional: true
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -5070,10 +5056,6 @@ snapshots:
       vite: 5.4.11(@types/node@22.9.3)(lightningcss@1.28.1)(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
-
-  '@xstate/store@2.6.1(react@18.3.1)':
-    optionalDependencies:
-      react: 18.3.1
 
   abbrev@1.1.1: {}
 
