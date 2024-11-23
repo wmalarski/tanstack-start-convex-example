@@ -1,28 +1,15 @@
-import { useAuthToken } from "@convex-dev/auth/react";
-import { Link, createFileRoute, redirect } from "@tanstack/react-router";
-import { TopNavbar } from "~/components/common/top-navbar";
-import { getSessionCookie } from "~/lib/auth/server-functions";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
-export const Home = () => {
-	const token = useAuthToken();
-
+const RouteComponent = () => {
 	return (
-		<div className="p-2">
-			<TopNavbar />
-			<h3>Welcome Home!!!</h3>
+		<div className="flex flex-col gap-2 p-2">
 			<Link to="/auth/sign-in">Sign In</Link>
 			<Link to="/auth/sign-up">Sign Up</Link>
-			<pre>{JSON.stringify({ token }, null, 2)}</pre>
+			<Link to="/albums">Albums</Link>
 		</div>
 	);
 };
 
 export const Route = createFileRoute("/")({
-	component: Home,
-	beforeLoad: async () => {
-		const token = await getSessionCookie();
-		if (!token) {
-			throw redirect({ to: "/auth/sign-in" });
-		}
-	},
+	component: RouteComponent,
 });

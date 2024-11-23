@@ -11,7 +11,7 @@ export const Route = createFileRoute("/auth/sign-up")({
 	beforeLoad: async () => {
 		const token = await getSessionCookie();
 		if (token) {
-			throw redirect({ to: "/" });
+			throw redirect({ to: "/albums" });
 		}
 	},
 });
