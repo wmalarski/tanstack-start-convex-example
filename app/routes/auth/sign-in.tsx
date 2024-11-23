@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { SignInForm } from "~/components/auth/sign-in-form";
+import { getSessionCookie } from "~/lib/auth/server-functions";
 
 const SignIn = () => {
 	return <SignInForm />;
@@ -7,14 +8,10 @@ const SignIn = () => {
 
 export const Route = createFileRoute("/auth/sign-in")({
 	component: SignIn,
-	ssr: false,
-	// beforeLoad: async (ctx) => {
-	// 	const user = await ctx.context.convex.query(api.auth.queryAuthUser);
-
-	// 	console.log({ user });
-
-	// 	if (user) {
-	// 		throw redirect({ to: "/" });
-	// 	}
-	// },
+	beforeLoad: async () => {
+		const token = await getSessionCookie();
+		if (token) {
+			throw redirect({ to: "/" });
+		}
+	},
 });

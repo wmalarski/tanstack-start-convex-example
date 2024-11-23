@@ -1,33 +1,17 @@
 import { createServerFn } from "@tanstack/start";
-import * as v from "valibot";
-import { deleteCookie, getEvent, setCookie } from "vinxi/http";
-import { valibotValidator } from "../common/valibot";
+import { parse } from "cookie-es";
+import { getEvent, getHeader } from "vinxi/http";
 
-const COOKIE_KEY = "__convex_session";
-
-const COOKIE_OPTIONS = {
-	httpOnly: true,
-	maxAge: 60 * 10, // 10 min
-	path: "/",
-	secure: import.meta.env.PROD,
-};
-
-export const setSessionCookie = createServerFn({ method: "POST" })
-	.validator(valibotValidator(v.object({ token: v.string() })))
-	.handler(async (ctx) => {
-		const event = getEvent();
-
-		setCookie(event, COOKIE_KEY, ctx.data.token, COOKIE_OPTIONS);
-
-		return { success: true };
-	});
-
-export const clearSessionCookie = createServerFn({ method: "POST" }).handler(
+export const getSessionCookie = createServerFn({ method: "GET" }).handler(
 	async () => {
 		const event = getEvent();
+		const header = getHeader(event, "Cookie");
+		const cookies = header ? parse(header) : {};
 
-		deleteCookie(event, COOKIE_KEY, COOKIE_OPTIONS);
+		const token = Object.entries(cookies).find(([key]) =>
+			key.startsWith("__convexAuthJWT"),
+		)?.[1];
 
-		return { success: true };
+		return token ?? null;
 	},
 );

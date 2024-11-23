@@ -1,4 +1,3 @@
-import {} from "@convex-dev/auth/react";
 import { Link } from "@tanstack/react-router";
 import { Button, buttonVariants } from "../ui/button";
 import { AuthFields } from "./auth-fields";

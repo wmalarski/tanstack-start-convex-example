@@ -1,6 +1,7 @@
 import { useAuthToken } from "@convex-dev/auth/react";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, redirect } from "@tanstack/react-router";
 import { TopNavbar } from "~/components/common/top-navbar";
+import { getSessionCookie } from "~/lib/auth/server-functions";
 
 export const Home = () => {
 	const token = useAuthToken();
@@ -18,15 +19,10 @@ export const Home = () => {
 
 export const Route = createFileRoute("/")({
 	component: Home,
-	ssr: false,
-	// beforeLoad: async (ctx) => {
-	// 	// console.log(window.localStorage);
-	// 	// const user = ctx.context.convex.watchQuery(api.auth.queryAuthUser);
-	// 	// ctx.context.convex.query()
-	// 	// user.localQueryResult()
-	// 	// console.log({ user });
-	// 	// if (!user) {
-	// 	// 	throw redirect({ to: "/auth/sign-in" });
-	// 	// }
-	// },
+	beforeLoad: async () => {
+		const token = await getSessionCookie();
+		if (!token) {
+			throw redirect({ to: "/auth/sign-in" });
+		}
+	},
 });
