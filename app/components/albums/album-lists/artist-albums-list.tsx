@@ -1,7 +1,7 @@
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { usePaginatedQuery } from "convex/react";
+import { DEFAULT_PAGE_SIZE } from "~/lib/common/constants";
 import { AlbumsList } from "./albums-list";
 
 type ArtistAlbumsListProps = {
@@ -9,9 +9,11 @@ type ArtistAlbumsListProps = {
 };
 
 export const ArtistAlbumsList = ({ albumId }: ArtistAlbumsListProps) => {
-	const randomAlbumsQuery = useSuspenseQuery(
-		convexQuery(api.albums.queryArtistAlbumsByAlbumId, { albumId }),
+	const albumsQuery = usePaginatedQuery(
+		api.albums.queryArtistAlbumsByAlbumId,
+		{ albumId },
+		{ initialNumItems: DEFAULT_PAGE_SIZE },
 	);
 
-	return <AlbumsList albums={randomAlbumsQuery.data} />;
+	return <AlbumsList albums={albumsQuery.results} />;
 };

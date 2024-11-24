@@ -17,6 +17,7 @@ import type * as albums from "../albums.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as reviews from "../reviews.js";
+import type * as utils from "../utils.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   reviews: typeof reviews;
+  utils: typeof utils;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

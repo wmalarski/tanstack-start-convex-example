@@ -1,15 +1,14 @@
-import type { Doc } from "convex/_generated/dataModel";
-import { AlbumsCard } from "../album-card/albums-card";
+import { type AlbumCardData, AlbumsCard } from "../album-card/albums-card";
 
 type AlbumsListProps = {
-	albums: Doc<"album">[];
+	albums: AlbumCardData[];
 };
 
 export const AlbumsList = ({ albums }: AlbumsListProps) => {
 	return (
 		<ul>
-			{albums.map((album) => (
-				<AlbumsCard key={album._id} album={album} />
+			{albums.map((data) => (
+				<AlbumsCard key={data.album._id} data={data} />
 			))}
 		</ul>
 	);

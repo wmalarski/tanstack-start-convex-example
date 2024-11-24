@@ -1,12 +1,14 @@
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { api } from "convex/_generated/api";
+import { usePaginatedQuery } from "convex/react";
+import { DEFAULT_PAGE_SIZE } from "~/lib/common/constants";
 import { AlbumsList } from "./albums-list";
 
 export const RandomAlbumsList = () => {
-	const randomAlbumsQuery = useSuspenseQuery(
-		convexQuery(api.albums.queryRandomAlbums, { take: 20 }),
+	const albumsQuery = usePaginatedQuery(
+		api.albums.queryRandomAlbums,
+		{},
+		{ initialNumItems: DEFAULT_PAGE_SIZE },
 	);
 
-	return <AlbumsList albums={randomAlbumsQuery.data} />;
+	return <AlbumsList albums={albumsQuery.results} />;
 };

@@ -1,9 +1,11 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
 import { query } from "./_generated/server";
+import { getUniqueArtistsMap, matchAlbumData } from "./utils";
 
 export const queryRandomAlbums = query({
-	args: { take: v.number() },
+	args: { paginationOpts: paginationOptsValidator },
 	handler: async (ctx, args) => {
 		const userId = await getAuthUserId(ctx);
 
@@ -23,13 +25,15 @@ export const queryRandomAlbums = query({
 		const albums = await ctx.db
 			.query("album")
 			.withSearchIndex("albumRandom", (q) => q.search("random", randomSeed))
-			.take(args.take);
+			.paginate(args.paginationOpts);
 
-		const withoutReviews = albums.filter(
+		const withoutReviews = albums.page.filter(
 			(album) => !reviewedAlbumIds.has(album._id),
 		);
 
-		return withoutReviews;
+		const artistMap = await getUniqueArtistsMap(ctx, withoutReviews);
+
+		return { ...albums, page: matchAlbumData(albums.page, artistMap) };
 	},
 });
 
@@ -41,7 +45,10 @@ export const queryAlbum = query({
 });
 
 export const queryArtistAlbumsByAlbumId = query({
-	args: { albumId: v.id("album") },
+	args: {
+		paginationOpts: paginationOptsValidator,
+		albumId: v.id("album"),
+	},
 	handler: async (ctx, args) => {
 		const album = await ctx.db.get(args.albumId);
 
@@ -49,9 +56,13 @@ export const queryArtistAlbumsByAlbumId = query({
 			throw new ConvexError("Invalid albumId");
 		}
 
-		return ctx.db
+		const albums = await ctx.db
 			.query("album")
 			.withIndex("albumArtist", (q) => q.eq("artistId", album.artistId))
-			.collect();
+			.paginate(args.paginationOpts);
+
+		const artistMap = await getUniqueArtistsMap(ctx, albums.page);
+
+		return { ...albums, page: matchAlbumData(albums.page, artistMap) };
 	},
 });
