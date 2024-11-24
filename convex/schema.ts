@@ -8,7 +8,7 @@ export default defineSchema({
 		name: v.string(),
 		sid: v.union(v.string(), v.null()),
 		id: v.string(),
-	}),
+	}).searchIndex("artistSearch", { searchField: "name" }),
 	album: defineTable({
 		artistId: v.id("artist"),
 		covers: v.union(
@@ -26,15 +26,15 @@ export default defineSchema({
 		title: v.string(),
 		year: v.optional(v.number()),
 		id: v.string(),
-	}),
+	}).searchIndex("albumSearch", { searchField: "title" }),
 	review: defineTable({
 		albumId: v.id("album"),
 		rate: v.number(),
 		text: v.string(),
 		userId: v.id("users"),
-	}),
+	}).index("reviewUsers", ["userId"]),
 	bookmark: defineTable({
 		albumId: v.id("album"),
 		userId: v.id("users"),
-	}),
+	}).index("bookmarkUsers", ["userId"]),
 });
