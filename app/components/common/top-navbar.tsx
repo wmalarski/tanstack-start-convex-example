@@ -26,6 +26,14 @@ export const TopNavbar = () => {
 					</Link>
 				</li>
 				<li>
+					<Link
+						to="/albums/search"
+						className={buttonVariants({ variant: "ghost" })}
+					>
+						Search
+					</Link>
+				</li>
+				<li>
 					<Link to="/reviews" className={buttonVariants({ variant: "ghost" })}>
 						Reviews
 					</Link>

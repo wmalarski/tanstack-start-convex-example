@@ -66,3 +66,20 @@ export const queryArtistAlbumsByAlbumId = query({
 		return { ...albums, page: matchAlbumData(albums.page, artistMap) };
 	},
 });
+
+export const queryAlbumsByTerm = query({
+	args: {
+		paginationOpts: paginationOptsValidator,
+		term: v.string(),
+	},
+	handler: async (ctx, args) => {
+		const albums = await ctx.db
+			.query("album")
+			.withSearchIndex("albumSearch", (q) => q.search("title", args.term))
+			.paginate(args.paginationOpts);
+
+		const artistMap = await getUniqueArtistsMap(ctx, albums.page);
+
+		return { ...albums, page: matchAlbumData(albums.page, artistMap) };
+	},
+});
