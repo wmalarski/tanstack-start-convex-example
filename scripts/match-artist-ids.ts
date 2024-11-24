@@ -40,6 +40,7 @@ const replaceArtistIds = (idMap: Map<string, string>, albums: Album[]) => {
 	return albums.map((album) => ({
 		...album,
 		artistId: idMap.get(album.artistId),
+		random: String(Math.floor(Math.random() * 1e18)),
 	}));
 };
 

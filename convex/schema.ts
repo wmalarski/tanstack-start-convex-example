@@ -26,7 +26,10 @@ export default defineSchema({
 		title: v.string(),
 		year: v.optional(v.number()),
 		id: v.string(),
-	}).searchIndex("albumSearch", { searchField: "title" }),
+		random: v.optional(v.string()),
+	})
+		.searchIndex("albumSearch", { searchField: "title" })
+		.searchIndex("albumRandom", { searchField: "random" }),
 	review: defineTable({
 		albumId: v.id("album"),
 		rate: v.number(),
