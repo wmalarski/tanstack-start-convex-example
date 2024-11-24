@@ -3,9 +3,7 @@ import { ConvexError, v } from "convex/values";
 import { query } from "./_generated/server";
 
 export const queryRandomAlbums = query({
-	args: {
-		take: v.number(),
-	},
+	args: { take: v.number() },
 	handler: async (ctx, args) => {
 		const userId = await getAuthUserId(ctx);
 
@@ -39,5 +37,21 @@ export const queryAlbum = query({
 	args: { albumId: v.id("album") },
 	handler: async (ctx, args) => {
 		return ctx.db.get(args.albumId);
+	},
+});
+
+export const queryArtistAlbumsByAlbumId = query({
+	args: { albumId: v.id("album") },
+	handler: async (ctx, args) => {
+		const album = await ctx.db.get(args.albumId);
+
+		if (!album) {
+			throw new ConvexError("Invalid albumId");
+		}
+
+		return ctx.db
+			.query("album")
+			.withIndex("albumArtist", (q) => q.eq("artistId", album.artistId))
+			.collect();
 	},
 });

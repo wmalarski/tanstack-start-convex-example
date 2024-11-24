@@ -1,5 +1,5 @@
 import type { Doc } from "convex/_generated/dataModel";
-import { AlbumsCard } from "./album-card/albums-card";
+import { AlbumsCard } from "../album-card/albums-card";
 
 type AlbumsListProps = {
 	albums: Doc<"album">[];

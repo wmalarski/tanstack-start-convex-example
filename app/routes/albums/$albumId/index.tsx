@@ -1,6 +1,7 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { AlbumHero } from "~/components/albums/album-hero";
+import { ArtistAlbumsList } from "~/components/albums/album-lists/artist-albums-list";
 
 const RouteComponent = () => {
 	const params = useParams({ from: "/albums/$albumId/" });
@@ -9,6 +10,9 @@ const RouteComponent = () => {
 		<div>
 			<Suspense>
 				<AlbumHero albumId={params.albumId} />
+			</Suspense>
+			<Suspense>
+				<ArtistAlbumsList albumId={params.albumId} />
 			</Suspense>
 		</div>
 	);
