@@ -37,6 +37,17 @@ export const loadDumpData = async () => {
 		}
 	});
 
+	const artists = tables.get("Artist")?.map((entry) => {
+		const [id, createdAt, name, sid] = entry;
+
+		return {
+			_creationTime: new Date(createdAt).getTime(),
+			id,
+			name,
+			sid: sid === "\\N" ? null : (sid ?? null),
+		};
+	});
+
 	const albums = tables.get("Album")?.map((entry) => {
 		const [
 			id,
@@ -49,44 +60,54 @@ export const loadDumpData = async () => {
 			release,
 			covers,
 		] = entry;
+
 		return {
 			artistId,
-			covers: parseNull(covers),
-			createdAt: new Date(createdAt).getTime(),
+			covers: parseCovers(covers),
+			_creationTime: new Date(createdAt).getTime(),
 			release: parseNull(release),
-			_id: id,
+			id,
 			sid: parseNull(sid),
 			title,
 			year: parseNumberNull(year),
 		};
 	});
 
-	console.log(tables.get("Artist"));
-
-	const artists = tables.get("Artist")?.map((entry) => {
-		const [id, createdAt, name, sid] = entry;
+	const userId = "kx7beywv3dz69wj71swddwa3ah754x38";
+	const reviews = tables.get("Review")?.map((entry) => {
+		const [_id, albumId, createdAt, rate, text] = entry;
 		return {
-			createdAt: new Date(createdAt),
-			_id: id,
-			name,
-			sid: sid === "\\N" ? null : (sid ?? null),
+			albumId,
+			_creationTime: new Date(createdAt).getTime(),
+			rate: Number(rate),
+			text,
+			userId,
 		};
 	});
 
-	// const reviews = tables.get("Review")?.map((entry) => {
-	//   const [id, albumId, createdAt, rate, text] = entry;
-	//   return {
-	//     albumId: albumId!,
-	//     createdAt: new Date(createdAt!),
-	//     id: id!,
-	//     rate: Number(rate!),
-	//     text: text!,
-	//     userId,
-	//   };
-	// });
-
 	await fs.writeFile("scripts/albums.json", JSON.stringify(albums, null, 2));
 	await fs.writeFile("scripts/artists.json", JSON.stringify(artists, null, 2));
+	await fs.writeFile("scripts/reviews.json", JSON.stringify(reviews, null, 2));
+};
+
+const parseCovers = (covers?: string) => {
+	const parsed = parseNull(covers);
+
+	if (!parsed) {
+		return null;
+	}
+
+	const json = JSON.parse(parsed);
+	const { "250": s250, "500": s500, "1200": s1200, ...reduced } = json;
+
+	const result = {
+		...reduced,
+		s250: s250?.slice(0, 12),
+		s500: s500?.slice(0, 12),
+		s1200: s1200?.slice(0, 12),
+	};
+
+	return result;
 };
 
 const parseNull = (arg?: string) => {

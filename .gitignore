@@ -24,3 +24,4 @@ yarn.lock
 
 scripts/dump.sql
 scripts/*.json
+scripts/snapshot_*

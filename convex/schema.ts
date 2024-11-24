@@ -5,27 +5,36 @@ import { v } from "convex/values";
 export default defineSchema({
 	...authTables,
 	artist: defineTable({
-		createdAt: v.number(),
 		name: v.string(),
-		sid: v.optional(v.string()),
+		sid: v.union(v.string(), v.null()),
+		id: v.string(),
 	}),
 	album: defineTable({
 		artistId: v.id("artist"),
-		covers: v.object({}),
-		createdAt: v.number(),
-		release: v.optional(v.string()),
-		sid: v.optional(v.string()),
+		covers: v.union(
+			v.object({
+				s1200: v.optional(v.array(v.string())),
+				s250: v.optional(v.array(v.string())),
+				s500: v.optional(v.array(v.string())),
+				large: v.optional(v.array(v.string())),
+				small: v.optional(v.array(v.string())),
+			}),
+			v.null(),
+		),
+		release: v.union(v.string(), v.null()),
+		sid: v.union(v.string(), v.null()),
 		title: v.string(),
 		year: v.optional(v.number()),
+		id: v.string(),
 	}),
 	review: defineTable({
 		albumId: v.id("album"),
-		createdAt: v.number(),
 		rate: v.number(),
 		text: v.string(),
+		userId: v.id("users"),
 	}),
 	bookmark: defineTable({
 		albumId: v.id("album"),
-		createdAt: v.number(),
+		userId: v.id("users"),
 	}),
 });
