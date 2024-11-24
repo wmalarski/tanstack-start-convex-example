@@ -18,6 +18,9 @@ export const queryRandomAlbums = query({
 			.withIndex("reviewUsers", (q) => q.eq("userId", userId))
 			.collect();
 
+		// const page = await ctx.db.query("album").fullTableScan().take(1);
+		// page
+
 		const reviewedAlbumIds = new Set(reviews.map((review) => review.albumId));
 		const albums = await ctx.db.query("album").collect();
 
@@ -30,5 +33,12 @@ export const queryRandomAlbums = query({
 		).map((index) => withoutReviews[index]);
 
 		return randomAlbums;
+	},
+});
+
+export const queryAlbum = query({
+	args: { albumId: v.id("album") },
+	handler: async (ctx, args) => {
+		return ctx.db.get(args.albumId);
 	},
 });

@@ -1,12 +1,15 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
+import { Suspense } from "react";
+import { AlbumHero } from "~/components/albums/album-hero";
 
 const RouteComponent = () => {
 	const params = useParams({ from: "/albums/$albumId/" });
 
 	return (
 		<div>
-			'Hello /albums/$albumId/!'
-			<pre>{JSON.stringify(params, null, 2)}</pre>
+			<Suspense>
+				<AlbumHero albumId={params.albumId} />
+			</Suspense>
 		</div>
 	);
 };
