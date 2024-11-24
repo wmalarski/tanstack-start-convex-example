@@ -11,15 +11,23 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ReviewsImport } from './routes/reviews'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AlbumsImport } from './routes/albums'
 import { Route as IndexImport } from './routes/index'
+import { Route as ReviewsIndexImport } from './routes/reviews/index'
 import { Route as AlbumsIndexImport } from './routes/albums/index'
 import { Route as AuthSignUpImport } from './routes/auth/sign-up'
 import { Route as AuthSignInImport } from './routes/auth/sign-in'
 import { Route as AlbumsAlbumIdIndexImport } from './routes/albums/$albumId/index'
 
 // Create/Update Routes
+
+const ReviewsRoute = ReviewsImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthRoute = AuthImport.update({
   id: '/auth',
@@ -37,6 +45,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const ReviewsIndexRoute = ReviewsIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ReviewsRoute,
 } as any)
 
 const AlbumsIndexRoute = AlbumsIndexImport.update({
@@ -88,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsImport
+      parentRoute: typeof rootRoute
+    }
     '/auth/sign-in': {
       id: '/auth/sign-in'
       path: '/sign-in'
@@ -108,6 +129,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/albums/'
       preLoaderRoute: typeof AlbumsIndexImport
       parentRoute: typeof AlbumsImport
+    }
+    '/reviews/': {
+      id: '/reviews/'
+      path: '/'
+      fullPath: '/reviews/'
+      preLoaderRoute: typeof ReviewsIndexImport
+      parentRoute: typeof ReviewsImport
     }
     '/albums/$albumId/': {
       id: '/albums/$albumId/'
@@ -146,13 +174,26 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface ReviewsRouteChildren {
+  ReviewsIndexRoute: typeof ReviewsIndexRoute
+}
+
+const ReviewsRouteChildren: ReviewsRouteChildren = {
+  ReviewsIndexRoute: ReviewsIndexRoute,
+}
+
+const ReviewsRouteWithChildren =
+  ReviewsRoute._addFileChildren(ReviewsRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/albums': typeof AlbumsRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/reviews': typeof ReviewsRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums/': typeof AlbumsIndexRoute
+  '/reviews/': typeof ReviewsIndexRoute
   '/albums/$albumId': typeof AlbumsAlbumIdIndexRoute
 }
 
@@ -162,6 +203,7 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums': typeof AlbumsIndexRoute
+  '/reviews': typeof ReviewsIndexRoute
   '/albums/$albumId': typeof AlbumsAlbumIdIndexRoute
 }
 
@@ -170,9 +212,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/albums': typeof AlbumsRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/reviews': typeof ReviewsRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums/': typeof AlbumsIndexRoute
+  '/reviews/': typeof ReviewsIndexRoute
   '/albums/$albumId/': typeof AlbumsAlbumIdIndexRoute
 }
 
@@ -182,9 +226,11 @@ export interface FileRouteTypes {
     | '/'
     | '/albums'
     | '/auth'
+    | '/reviews'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums/'
+    | '/reviews/'
     | '/albums/$albumId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -193,15 +239,18 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums'
+    | '/reviews'
     | '/albums/$albumId'
   id:
     | '__root__'
     | '/'
     | '/albums'
     | '/auth'
+    | '/reviews'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums/'
+    | '/reviews/'
     | '/albums/$albumId/'
   fileRoutesById: FileRoutesById
 }
@@ -210,12 +259,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AlbumsRoute: typeof AlbumsRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  ReviewsRoute: typeof ReviewsRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AlbumsRoute: AlbumsRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  ReviewsRoute: ReviewsRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -230,7 +281,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/albums",
-        "/auth"
+        "/auth",
+        "/reviews"
       ]
     },
     "/": {
@@ -250,6 +302,12 @@ export const routeTree = rootRoute
         "/auth/sign-up"
       ]
     },
+    "/reviews": {
+      "filePath": "reviews.tsx",
+      "children": [
+        "/reviews/"
+      ]
+    },
     "/auth/sign-in": {
       "filePath": "auth/sign-in.tsx",
       "parent": "/auth"
@@ -261,6 +319,10 @@ export const routeTree = rootRoute
     "/albums/": {
       "filePath": "albums/index.tsx",
       "parent": "/albums"
+    },
+    "/reviews/": {
+      "filePath": "reviews/index.tsx",
+      "parent": "/reviews"
     },
     "/albums/$albumId/": {
       "filePath": "albums/$albumId/index.tsx",

@@ -10,6 +10,6 @@ const RouteComponent = () => {
 	);
 };
 
-export const Route = createFileRoute("/albums")({
+export const Route = createFileRoute("/reviews")({
 	component: RouteComponent,
 });
