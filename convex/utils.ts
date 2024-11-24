@@ -22,7 +22,7 @@ export const getUniqueArtistsMap = async (
 
 export const getUniqueAlbums = async (
 	ctx: GenericQueryCtx<DataModel>,
-	reviews: Doc<"review">[],
+	reviews: Pick<Doc<"review">, "albumId">[],
 ) => {
 	const albumIds = reviews.map((review) => review.albumId);
 	const uniqueAlbumIds = [...new Set(albumIds)];
@@ -89,6 +89,37 @@ export const matchAlbumData = (
 		}
 
 		page.push({ album, artist });
+	});
+
+	return page;
+};
+
+type BookmarkData = {
+	artist: Doc<"artist">;
+	bookmark: Doc<"bookmark">;
+	album: Doc<"album">;
+};
+
+export const matchBookmarkData = (
+	bookmarks: Doc<"bookmark">[],
+	albumMap: Map<Id<"album">, Doc<"album">>,
+	artistMap: Map<Id<"artist">, Doc<"artist">>,
+) => {
+	const page: BookmarkData[] = [];
+
+	bookmarks.forEach((bookmark) => {
+		const album = albumMap.get(bookmark.albumId);
+
+		if (!album) {
+			return;
+		}
+
+		const artist = artistMap.get(album.artistId);
+		if (!artist) {
+			return;
+		}
+
+		page.push({ bookmark, album, artist });
 	});
 
 	return page;
