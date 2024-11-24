@@ -17,6 +17,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AlbumsIndexImport } from './routes/albums/index'
 import { Route as AuthSignUpImport } from './routes/auth/sign-up'
 import { Route as AuthSignInImport } from './routes/auth/sign-in'
+import { Route as AlbumsAlbumIdIndexImport } from './routes/albums/$albumId/index'
 
 // Create/Update Routes
 
@@ -54,6 +55,12 @@ const AuthSignInRoute = AuthSignInImport.update({
   id: '/sign-in',
   path: '/sign-in',
   getParentRoute: () => AuthRoute,
+} as any)
+
+const AlbumsAlbumIdIndexRoute = AlbumsAlbumIdIndexImport.update({
+  id: '/$albumId/',
+  path: '/$albumId/',
+  getParentRoute: () => AlbumsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -102,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlbumsIndexImport
       parentRoute: typeof AlbumsImport
     }
+    '/albums/$albumId/': {
+      id: '/albums/$albumId/'
+      path: '/$albumId'
+      fullPath: '/albums/$albumId'
+      preLoaderRoute: typeof AlbumsAlbumIdIndexImport
+      parentRoute: typeof AlbumsImport
+    }
   }
 }
 
@@ -109,10 +123,12 @@ declare module '@tanstack/react-router' {
 
 interface AlbumsRouteChildren {
   AlbumsIndexRoute: typeof AlbumsIndexRoute
+  AlbumsAlbumIdIndexRoute: typeof AlbumsAlbumIdIndexRoute
 }
 
 const AlbumsRouteChildren: AlbumsRouteChildren = {
   AlbumsIndexRoute: AlbumsIndexRoute,
+  AlbumsAlbumIdIndexRoute: AlbumsAlbumIdIndexRoute,
 }
 
 const AlbumsRouteWithChildren =
@@ -137,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums/': typeof AlbumsIndexRoute
+  '/albums/$albumId': typeof AlbumsAlbumIdIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -145,6 +162,7 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums': typeof AlbumsIndexRoute
+  '/albums/$albumId': typeof AlbumsAlbumIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -155,6 +173,7 @@ export interface FileRoutesById {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums/': typeof AlbumsIndexRoute
+  '/albums/$albumId/': typeof AlbumsAlbumIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -166,8 +185,15 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums/'
+    | '/albums/$albumId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/auth/sign-in' | '/auth/sign-up' | '/albums'
+  to:
+    | '/'
+    | '/auth'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/albums'
+    | '/albums/$albumId'
   id:
     | '__root__'
     | '/'
@@ -176,6 +202,7 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums/'
+    | '/albums/$albumId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -212,7 +239,8 @@ export const routeTree = rootRoute
     "/albums": {
       "filePath": "albums.tsx",
       "children": [
-        "/albums/"
+        "/albums/",
+        "/albums/$albumId/"
       ]
     },
     "/auth": {
@@ -232,6 +260,10 @@ export const routeTree = rootRoute
     },
     "/albums/": {
       "filePath": "albums/index.tsx",
+      "parent": "/albums"
+    },
+    "/albums/$albumId/": {
+      "filePath": "albums/$albumId/index.tsx",
       "parent": "/albums"
     }
   }

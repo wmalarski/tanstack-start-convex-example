@@ -6,7 +6,6 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
-import type { ConvexReactClient } from "convex/react";
 import type { PropsWithChildren } from "react";
 import { DefaultCatchBoundary } from "~/components/common/default-catch-boundary";
 import { NotFound } from "~/components/common/not-found";
@@ -39,7 +38,6 @@ export const RootComponent = () => {
 
 type RouteContext = {
 	queryClient: QueryClient;
-	convex: ConvexReactClient;
 };
 
 export const Route = createRootRouteWithContext<RouteContext>()({
