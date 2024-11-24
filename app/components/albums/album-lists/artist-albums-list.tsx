@@ -5,14 +5,12 @@ import type { Id } from "convex/_generated/dataModel";
 import { AlbumsList } from "./albums-list";
 
 type ArtistAlbumsListProps = {
-	albumId: string;
+	albumId: Id<"album">;
 };
 
 export const ArtistAlbumsList = ({ albumId }: ArtistAlbumsListProps) => {
 	const randomAlbumsQuery = useSuspenseQuery(
-		convexQuery(api.albums.queryArtistAlbumsByAlbumId, {
-			albumId: albumId as Id<"album">,
-		}),
+		convexQuery(api.albums.queryArtistAlbumsByAlbumId, { albumId }),
 	);
 
 	return <AlbumsList albums={randomAlbumsQuery.data} />;

@@ -1,20 +1,26 @@
 import { Link } from "@tanstack/react-router";
 import type { Doc } from "convex/_generated/dataModel";
 
-type ReviewCardProps = {
+export type ReviewCardData = {
+	artist: Doc<"artist">;
 	review: Doc<"review">;
+	album: Doc<"album">;
 };
 
-export const ReviewCard = ({ review }: ReviewCardProps) => {
+type ReviewCardProps = {
+	data: ReviewCardData;
+};
+
+export const ReviewCard = ({ data }: ReviewCardProps) => {
 	return (
 		<li className="relative">
 			<Link
 				to="/albums/$albumId/"
-				params={{ albumId: review.albumId }}
+				params={{ albumId: data.album._id }}
 				className="absolute inset-0"
 				aria-label="Album details"
 			/>
-			<pre>{JSON.stringify(review, null, 2)}</pre>
+			<pre>{JSON.stringify(data, null, 2)}</pre>
 		</li>
 	);
 };

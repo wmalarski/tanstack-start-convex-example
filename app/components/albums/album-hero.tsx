@@ -4,12 +4,12 @@ import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 
 type AlbumHeroProps = {
-	albumId: string;
+	albumId: Id<"album">;
 };
 
 export const AlbumHero = ({ albumId }: AlbumHeroProps) => {
 	const albumQuery = useSuspenseQuery(
-		convexQuery(api.albums.queryAlbum, { albumId: albumId as Id<"album"> }),
+		convexQuery(api.albums.queryAlbum, { albumId }),
 	);
 
 	return <pre>{JSON.stringify(albumQuery.data, null, 2)}</pre>;

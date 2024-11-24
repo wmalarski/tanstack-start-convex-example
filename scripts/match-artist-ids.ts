@@ -49,8 +49,6 @@ const matchIds = async () => {
 	const albumImportData = await readAlbumsImportFile();
 	const replaced = replaceArtistIds(artistJsonlData, albumImportData);
 
-	console.log(replaced.length);
-
 	await fs.writeFile(
 		"scripts/matched-albums.json",
 		JSON.stringify(replaced, null, 2),

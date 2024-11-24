@@ -1,13 +1,18 @@
 import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
 import { usePaginatedQuery } from "convex/react";
 import { ReviewsList } from "./reviews-list";
 
 const PAGE_SIZE = 10;
 
-export const AllReviewsList = () => {
+type ArtistReviewsListProps = {
+	albumId: Id<"album">;
+};
+
+export const ArtistReviewsList = ({ albumId }: ArtistReviewsListProps) => {
 	const reviewsQuery = usePaginatedQuery(
-		api.reviews.queryReviews,
-		{},
+		api.reviews.queryReviewsByArtistAlbumId,
+		{ albumId },
 		{ initialNumItems: PAGE_SIZE },
 	);
 

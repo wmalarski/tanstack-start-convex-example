@@ -48,8 +48,6 @@ const matchIds = async () => {
 	const reviews = await readReviewsImportFile();
 	const replaced = replaceArtistIds(idsMap, reviews);
 
-	console.log(replaced.length);
-
 	await fs.writeFile(
 		"scripts/matched-reviews.json",
 		JSON.stringify(replaced, null, 2),

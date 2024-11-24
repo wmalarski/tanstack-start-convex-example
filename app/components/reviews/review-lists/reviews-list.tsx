@@ -1,15 +1,14 @@
-import type { Doc } from "convex/_generated/dataModel";
-import { ReviewCard } from "../review-card/review-card";
+import { ReviewCard, type ReviewCardData } from "../review-card/review-card";
 
 type ReviewsListProps = {
-	reviews: Doc<"review">[];
+	reviews: ReviewCardData[];
 };
 
 export const ReviewsList = ({ reviews }: ReviewsListProps) => {
 	return (
 		<ul>
-			{reviews.map((review) => (
-				<ReviewCard key={review._id} review={review} />
+			{reviews.map((data) => (
+				<ReviewCard key={data.review._id} data={data} />
 			))}
 		</ul>
 	);
