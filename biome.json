@@ -19,6 +19,9 @@
 				"noUnusedVariables": "error",
 				"useArrayLiterals": "error"
 			},
+			"complexity": {
+				"noForEach": "off"
+			},
 			"performance": {
 				"noReExportAll": "off"
 			},

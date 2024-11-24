@@ -22,3 +22,5 @@ yarn.lock
 /blob-report/
 /playwright/.cache/
 
+scripts/dump.sql
+scripts/*.json
