@@ -1,18 +1,56 @@
 import { createServerFn } from "@tanstack/start";
-import { parse } from "cookie-es";
-import { getEvent, getHeader } from "vinxi/http";
-import { convexMiddleware } from "../convex/middleware";
+import { api } from "convex/_generated/api";
+import * as v from "valibot";
+import { valibotValidator } from "../common/valibot";
+import {
+	convexAuthorizedMiddleware,
+	convexMiddleware,
+} from "../convex/middleware";
+import {
+	clearSessionTokens,
+	getSessionJwtToken,
+	setSessionTokens,
+} from "./session";
 
 export const getSessionCookie = createServerFn({ method: "GET" })
 	.middleware([convexMiddleware])
-	.handler(async () => {
-		const event = getEvent();
-		const header = getHeader(event, "Cookie");
-		const cookies = header ? parse(header) : {};
+	.handler(() => {
+		return getSessionJwtToken();
+	});
 
-		const token = Object.entries(cookies).find(([key]) =>
-			key.startsWith("__convexAuthJWT"),
-		)?.[1];
+export const signInMutation = createServerFn({ method: "POST" })
+	.middleware([convexMiddleware])
+	.validator(
+		valibotValidator(
+			v.object({
+				email: v.string(),
+				password: v.string(),
+				flow: v.union([
+					v.literal("signUp"),
+					v.literal("signIn"),
+					v.literal("reset"),
+					v.literal("reset-verification"),
+					v.literal("email-verification"),
+				]),
+			}),
+		),
+	)
+	.handler(async ({ context, data }) => {
+		const result = await context.convexClient.action(api.auth.signIn, {
+			provider: "password",
+			params: data,
+		});
 
-		return token ?? null;
+		if (result.tokens) {
+			setSessionTokens(result.tokens);
+		}
+
+		return result.started;
+	});
+
+export const signOutMutation = createServerFn({ method: "POST" })
+	.middleware([convexAuthorizedMiddleware])
+	.handler(async ({ context }) => {
+		await context.convexClient.action(api.auth.signOut);
+		clearSessionTokens();
 	});

@@ -1,12 +1,12 @@
 import { createMiddleware } from "@tanstack/start";
 import { ConvexHttpClient } from "convex/browser";
-import { getSessionToken } from "./session";
+import { getSessionJwtToken } from "../auth/session";
 
 export const convexMiddleware = createMiddleware().server(({ next }) => {
 	const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
 	const convexClient = new ConvexHttpClient(CONVEX_URL);
 
-	const authToken = getSessionToken();
+	const authToken = getSessionJwtToken();
 	if (authToken) {
 		convexClient.setAuth(authToken);
 	}
@@ -21,5 +21,5 @@ export const convexAuthorizedMiddleware = createMiddleware()
 			throw new Error("Unauthorized access");
 		}
 
-		return next();
+		return next({ context: { requiredToken: context.authToken } });
 	});
