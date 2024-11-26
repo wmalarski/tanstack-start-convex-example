@@ -118,3 +118,19 @@ export const getAlbumQueryOptions = (args: GetAlbumQueryOptionsArgs) => {
 		queryFn: () => getAlbum({ data: args }),
 	});
 };
+
+export const patchAlbumMutation = createServerFn({ method: "POST" })
+	.middleware([convexAuthorizedMiddleware])
+	.validator(
+		v.object({
+			albumId: v.string(),
+			title: v.string(),
+			year: v.number(),
+		}),
+	)
+	.handler(async ({ context, data }) =>
+		context.convexClient.mutation(api.albums.patchAlbumMutation, {
+			...data,
+			albumId: data.albumId as Id<"album">,
+		}),
+	);

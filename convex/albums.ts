@@ -1,7 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import {
 	type AlbumDoc,
 	type ArtistDoc,
@@ -101,5 +101,22 @@ export const queryAlbumsByTerm = query({
 		const artistMap = await getUniqueArtistsMap(ctx, albums.page);
 
 		return { ...albums, page: matchAlbumData(albums.page, artistMap) };
+	},
+});
+
+export const patchAlbumMutation = mutation({
+	args: {
+		albumId: v.id("album"),
+		title: v.string(),
+		year: v.number(),
+	},
+	handler: async (ctx, { albumId, title, year }) => {
+		const userId = await getAuthUserId(ctx);
+
+		if (!userId) {
+			throw new ConvexError("User is unauthorized");
+		}
+
+		return ctx.db.patch(albumId, { title, year });
 	},
 });
