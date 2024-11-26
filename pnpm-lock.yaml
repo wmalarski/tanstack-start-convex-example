@@ -11,9 +11,6 @@ importers:
       '@convex-dev/auth':
         specifier: ^0.0.74
         version: 0.0.74(@auth/core@0.36.0)(convex@1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      '@convex-dev/react-query':
-        specifier: 0.0.0-alpha.8
-        version: 0.0.0-alpha.8(@tanstack/react-query@5.61.3(react@18.3.1))(convex@1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@radix-ui/react-alert-dialog':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -301,12 +298,6 @@ packages:
         optional: true
       react:
         optional: true
-
-  '@convex-dev/react-query@0.0.0-alpha.8':
-    resolution: {integrity: sha512-Rv/q7/CplU75f7ckBd2vh+HoeeQ0tOrjwMl14Hk7D/03e55oUIU0TV5JYYzC79ZQyyAtoj7CmCo5ZxcmtKNv1Q==}
-    peerDependencies:
-      '@tanstack/react-query': ^5.0.0
-      convex: ^1.17.0
 
   '@deno/shim-deno-test@0.5.0':
     resolution: {integrity: sha512-4nMhecpGlPi0cSzT67L+Tm+GOJqvuk8gqHBziqcUQOarnuIax1z96/gJHCSIz2Z0zhxE6Rzwb3IZXPtFh51j+w==}
@@ -4081,11 +4072,6 @@ snapshots:
       server-only: 0.0.1
     optionalDependencies:
       react: 18.3.1
-
-  '@convex-dev/react-query@0.0.0-alpha.8(@tanstack/react-query@5.61.3(react@18.3.1))(convex@1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
-    dependencies:
-      '@tanstack/react-query': 5.61.3(react@18.3.1)
-      convex: 1.17.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   '@deno/shim-deno-test@0.5.0': {}
 

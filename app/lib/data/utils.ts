@@ -1,6 +1,8 @@
 import type { PaginationResult } from "convex/server";
 import * as v from "valibot";
 
+export const DEFAULT_PAGE_SIZE = 10;
+
 export const paginationSchema = v.object({
 	id: v.optional(v.number()),
 	endCursor: v.optional(v.nullable(v.string())),

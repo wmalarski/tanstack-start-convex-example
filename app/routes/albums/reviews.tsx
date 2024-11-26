@@ -1,21 +1,13 @@
-import { useAuthToken } from "@convex-dev/auth/react";
-import { Navigate, createFileRoute } from "@tanstack/react-router";
-import { useConvexAuth } from "convex/react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Suspense } from "react";
 import { AllReviewsList } from "~/components/reviews/review-lists/all-reviews-list";
 
 const RouteComponent = () => {
-	const { isLoading } = useConvexAuth();
-	const token = useAuthToken();
-
-	if (isLoading) {
-		return null;
-	}
-
-	if (!token) {
-		return <Navigate to="/auth/sign-in" />;
-	}
-
-	return <AllReviewsList />;
+	return (
+		<Suspense>
+			<AllReviewsList />
+		</Suspense>
+	);
 };
 
 export const Route = createFileRoute("/albums/reviews")({

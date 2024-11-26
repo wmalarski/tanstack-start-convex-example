@@ -15,7 +15,7 @@ export const AlbumsCard = ({ data }: AlbumsCardProps) => {
 	return (
 		<li className="relative">
 			<Link
-				to="/albums/$albumId/"
+				to="/albums/$albumId"
 				params={{ albumId: data.album._id }}
 				className="absolute inset-0"
 				aria-label="Details"

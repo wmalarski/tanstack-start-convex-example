@@ -1,10 +1,9 @@
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import type { Id } from "convex/_generated/dataModel";
 import { getArtistAlbumsQueryOptions } from "~/lib/data/albums";
 import { AlbumsList } from "./albums-list";
 
 type ArtistAlbumsListProps = {
-	albumId: Id<"album">;
+	albumId: string;
 };
 
 export const ArtistAlbumsList = ({ albumId }: ArtistAlbumsListProps) => {

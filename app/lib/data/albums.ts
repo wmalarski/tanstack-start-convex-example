@@ -4,9 +4,12 @@ import { api } from "convex/_generated/api";
 import type { Doc, Id } from "convex/_generated/dataModel";
 import type { IdAsString } from "convex/utils";
 import * as v from "valibot";
-import { DEFAULT_PAGE_SIZE } from "../common/constants";
 import { convexAuthorizedMiddleware } from "../convex/middleware";
-import { paginationPageParamOptions, paginationSchema } from "./utils";
+import {
+	DEFAULT_PAGE_SIZE,
+	paginationPageParamOptions,
+	paginationSchema,
+} from "./utils";
 
 const getRandomAlbums = createServerFn({ method: "GET" })
 	.middleware([convexAuthorizedMiddleware])

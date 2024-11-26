@@ -1,9 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import type { Id } from "convex/_generated/dataModel";
 import { getAlbumQueryOptions } from "~/lib/data/albums";
 
 type AlbumHeroProps = {
-	albumId: Id<"album">;
+	albumId: string;
 };
 
 export const AlbumHero = ({ albumId }: AlbumHeroProps) => {
