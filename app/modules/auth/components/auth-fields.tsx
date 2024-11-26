@@ -13,7 +13,7 @@ export const AuthFields = () => {
 			<FormItem>
 				<FormLabel>Email</FormLabel>
 				<FormControl>
-					<Input name="email" type="text" placeholder="Email" />
+					<Input required name="email" type="text" placeholder="Email" />
 				</FormControl>
 				<FormDescription>Enter you email</FormDescription>
 				<FormMessage />
@@ -22,7 +22,12 @@ export const AuthFields = () => {
 			<FormItem>
 				<FormLabel>Password</FormLabel>
 				<FormControl>
-					<Input name="password" type="password" placeholder="Password" />
+					<Input
+						required
+						name="password"
+						type="password"
+						placeholder="Password"
+					/>
 				</FormControl>
 				<FormDescription>Enter you password</FormDescription>
 				<FormMessage />

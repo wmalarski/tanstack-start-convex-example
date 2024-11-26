@@ -1,5 +1,5 @@
 import { Button } from "~/ui/button";
-import { ReviewCard, type ReviewCardData } from "../review-card/review-card";
+import { ReviewCard, type ReviewCardData } from "../review-card";
 
 type ReviewsListProps = {
 	reviews: ReviewCardData[];

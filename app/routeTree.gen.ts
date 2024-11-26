@@ -22,6 +22,9 @@ import { Route as AlbumsSearchImport } from './routes/albums/search'
 import { Route as AlbumsReviewsImport } from './routes/albums/reviews'
 import { Route as AlbumsBookmarksImport } from './routes/albums/bookmarks'
 import { Route as AlbumsAlbumIdIndexImport } from './routes/albums/$albumId/index'
+import { Route as AlbumsAlbumIdEditImport } from './routes/albums/$albumId/edit'
+import { Route as AlbumsAlbumIdReviewIndexImport } from './routes/albums/$albumId/review/index'
+import { Route as AlbumsAlbumIdReviewReviewIdImport } from './routes/albums/$albumId/review/$reviewId'
 
 // Create/Update Routes
 
@@ -90,6 +93,25 @@ const AlbumsAlbumIdIndexRoute = AlbumsAlbumIdIndexImport.update({
   path: '/$albumId/',
   getParentRoute: () => AlbumsRoute,
 } as any)
+
+const AlbumsAlbumIdEditRoute = AlbumsAlbumIdEditImport.update({
+  id: '/$albumId/edit',
+  path: '/$albumId/edit',
+  getParentRoute: () => AlbumsRoute,
+} as any)
+
+const AlbumsAlbumIdReviewIndexRoute = AlbumsAlbumIdReviewIndexImport.update({
+  id: '/$albumId/review/',
+  path: '/$albumId/review/',
+  getParentRoute: () => AlbumsRoute,
+} as any)
+
+const AlbumsAlbumIdReviewReviewIdRoute =
+  AlbumsAlbumIdReviewReviewIdImport.update({
+    id: '/$albumId/review/$reviewId',
+    path: '/$albumId/review/$reviewId',
+    getParentRoute: () => AlbumsRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -165,11 +187,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlbumsIndexImport
       parentRoute: typeof AlbumsImport
     }
+    '/albums/$albumId/edit': {
+      id: '/albums/$albumId/edit'
+      path: '/$albumId/edit'
+      fullPath: '/albums/$albumId/edit'
+      preLoaderRoute: typeof AlbumsAlbumIdEditImport
+      parentRoute: typeof AlbumsImport
+    }
     '/albums/$albumId/': {
       id: '/albums/$albumId/'
       path: '/$albumId'
       fullPath: '/albums/$albumId'
       preLoaderRoute: typeof AlbumsAlbumIdIndexImport
+      parentRoute: typeof AlbumsImport
+    }
+    '/albums/$albumId/review/$reviewId': {
+      id: '/albums/$albumId/review/$reviewId'
+      path: '/$albumId/review/$reviewId'
+      fullPath: '/albums/$albumId/review/$reviewId'
+      preLoaderRoute: typeof AlbumsAlbumIdReviewReviewIdImport
+      parentRoute: typeof AlbumsImport
+    }
+    '/albums/$albumId/review/': {
+      id: '/albums/$albumId/review/'
+      path: '/$albumId/review'
+      fullPath: '/albums/$albumId/review'
+      preLoaderRoute: typeof AlbumsAlbumIdReviewIndexImport
       parentRoute: typeof AlbumsImport
     }
   }
@@ -182,7 +225,10 @@ interface AlbumsRouteChildren {
   AlbumsReviewsRoute: typeof AlbumsReviewsRoute
   AlbumsSearchRoute: typeof AlbumsSearchRoute
   AlbumsIndexRoute: typeof AlbumsIndexRoute
+  AlbumsAlbumIdEditRoute: typeof AlbumsAlbumIdEditRoute
   AlbumsAlbumIdIndexRoute: typeof AlbumsAlbumIdIndexRoute
+  AlbumsAlbumIdReviewReviewIdRoute: typeof AlbumsAlbumIdReviewReviewIdRoute
+  AlbumsAlbumIdReviewIndexRoute: typeof AlbumsAlbumIdReviewIndexRoute
 }
 
 const AlbumsRouteChildren: AlbumsRouteChildren = {
@@ -190,7 +236,10 @@ const AlbumsRouteChildren: AlbumsRouteChildren = {
   AlbumsReviewsRoute: AlbumsReviewsRoute,
   AlbumsSearchRoute: AlbumsSearchRoute,
   AlbumsIndexRoute: AlbumsIndexRoute,
+  AlbumsAlbumIdEditRoute: AlbumsAlbumIdEditRoute,
   AlbumsAlbumIdIndexRoute: AlbumsAlbumIdIndexRoute,
+  AlbumsAlbumIdReviewReviewIdRoute: AlbumsAlbumIdReviewReviewIdRoute,
+  AlbumsAlbumIdReviewIndexRoute: AlbumsAlbumIdReviewIndexRoute,
 }
 
 const AlbumsRouteWithChildren =
@@ -219,7 +268,10 @@ export interface FileRoutesByFullPath {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums/': typeof AlbumsIndexRoute
+  '/albums/$albumId/edit': typeof AlbumsAlbumIdEditRoute
   '/albums/$albumId': typeof AlbumsAlbumIdIndexRoute
+  '/albums/$albumId/review/$reviewId': typeof AlbumsAlbumIdReviewReviewIdRoute
+  '/albums/$albumId/review': typeof AlbumsAlbumIdReviewIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -232,7 +284,10 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums': typeof AlbumsIndexRoute
+  '/albums/$albumId/edit': typeof AlbumsAlbumIdEditRoute
   '/albums/$albumId': typeof AlbumsAlbumIdIndexRoute
+  '/albums/$albumId/review/$reviewId': typeof AlbumsAlbumIdReviewReviewIdRoute
+  '/albums/$albumId/review': typeof AlbumsAlbumIdReviewIndexRoute
 }
 
 export interface FileRoutesById {
@@ -247,7 +302,10 @@ export interface FileRoutesById {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/albums/': typeof AlbumsIndexRoute
+  '/albums/$albumId/edit': typeof AlbumsAlbumIdEditRoute
   '/albums/$albumId/': typeof AlbumsAlbumIdIndexRoute
+  '/albums/$albumId/review/$reviewId': typeof AlbumsAlbumIdReviewReviewIdRoute
+  '/albums/$albumId/review/': typeof AlbumsAlbumIdReviewIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -263,7 +321,10 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums/'
+    | '/albums/$albumId/edit'
     | '/albums/$albumId'
+    | '/albums/$albumId/review/$reviewId'
+    | '/albums/$albumId/review'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -275,7 +336,10 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums'
+    | '/albums/$albumId/edit'
     | '/albums/$albumId'
+    | '/albums/$albumId/review/$reviewId'
+    | '/albums/$albumId/review'
   id:
     | '__root__'
     | '/'
@@ -288,7 +352,10 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/albums/'
+    | '/albums/$albumId/edit'
     | '/albums/$albumId/'
+    | '/albums/$albumId/review/$reviewId'
+    | '/albums/$albumId/review/'
   fileRoutesById: FileRoutesById
 }
 
@@ -332,7 +399,10 @@ export const routeTree = rootRoute
         "/albums/reviews",
         "/albums/search",
         "/albums/",
-        "/albums/$albumId/"
+        "/albums/$albumId/edit",
+        "/albums/$albumId/",
+        "/albums/$albumId/review/$reviewId",
+        "/albums/$albumId/review/"
       ]
     },
     "/auth": {
@@ -369,8 +439,20 @@ export const routeTree = rootRoute
       "filePath": "albums/index.tsx",
       "parent": "/albums"
     },
+    "/albums/$albumId/edit": {
+      "filePath": "albums/$albumId/edit.tsx",
+      "parent": "/albums"
+    },
     "/albums/$albumId/": {
       "filePath": "albums/$albumId/index.tsx",
+      "parent": "/albums"
+    },
+    "/albums/$albumId/review/$reviewId": {
+      "filePath": "albums/$albumId/review/$reviewId.tsx",
+      "parent": "/albums"
+    },
+    "/albums/$albumId/review/": {
+      "filePath": "albums/$albumId/review/index.tsx",
       "parent": "/albums"
     }
   }
