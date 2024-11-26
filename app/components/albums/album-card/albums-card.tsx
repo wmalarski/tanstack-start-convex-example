@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import type { Doc } from "convex/_generated/dataModel";
+import type { OmitId } from "~/lib/convex/types";
 
 export type AlbumCardData = {
-	artist: Doc<"artist">;
-	album: Doc<"album">;
+	artist: OmitId<Doc<"artist">>;
+	album: OmitId<Doc<"album">>;
 };
 
 type AlbumsCardProps = {

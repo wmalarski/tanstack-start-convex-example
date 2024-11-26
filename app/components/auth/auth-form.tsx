@@ -1,21 +1,18 @@
-import { useAuthActions } from "@convex-dev/auth/react";
 import { useNavigate } from "@tanstack/react-router";
+import { decode } from "decode-formdata";
 import type { ComponentProps, PropsWithChildren } from "react";
+import { signInMutation } from "~/lib/auth/server-functions";
 
 export const AuthForm = ({ children }: PropsWithChildren) => {
 	const navigate = useNavigate();
-
-	const { signIn } = useAuthActions();
 
 	const onSubmit: ComponentProps<"form">["onSubmit"] = async (event) => {
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
-		const response = await signIn("password", formData);
+		await signInMutation({ data: decode(formData) });
 
-		if (response.signingIn) {
-			await navigate({ to: "/" });
-		}
+		await navigate({ to: "/" });
 	};
 
 	return (

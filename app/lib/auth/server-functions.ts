@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/start";
 import { api } from "convex/_generated/api";
 import * as v from "valibot";
-import { valibotValidator } from "../common/valibot";
 import {
 	convexAuthorizedMiddleware,
 	convexMiddleware,
@@ -21,19 +20,17 @@ export const getSessionCookie = createServerFn({ method: "GET" })
 export const signInMutation = createServerFn({ method: "POST" })
 	.middleware([convexMiddleware])
 	.validator(
-		valibotValidator(
-			v.object({
-				email: v.string(),
-				password: v.string(),
-				flow: v.union([
-					v.literal("signUp"),
-					v.literal("signIn"),
-					v.literal("reset"),
-					v.literal("reset-verification"),
-					v.literal("email-verification"),
-				]),
-			}),
-		),
+		v.object({
+			email: v.string(),
+			password: v.string(),
+			flow: v.union([
+				v.literal("signUp"),
+				v.literal("signIn"),
+				v.literal("reset"),
+				v.literal("reset-verification"),
+				v.literal("email-verification"),
+			]),
+		}),
 	)
 	.handler(async ({ context, data }) => {
 		const result = await context.convexClient.action(api.auth.signIn, {

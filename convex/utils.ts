@@ -40,7 +40,7 @@ export const getUniqueAlbums = async (
 	};
 };
 
-type ReviewData = {
+export type ReviewData = {
 	artist: Doc<"artist">;
 	review: Doc<"review">;
 	album: Doc<"album">;
@@ -71,7 +71,7 @@ export const matchReviewData = (
 	return page;
 };
 
-type AlbumData = {
+export type AlbumData = {
 	artist: Doc<"artist">;
 	album: Doc<"album">;
 };
@@ -94,7 +94,7 @@ export const matchAlbumData = (
 	return page;
 };
 
-type BookmarkData = {
+export type BookmarkData = {
 	artist: Doc<"artist">;
 	bookmark: Doc<"bookmark">;
 	album: Doc<"album">;
