@@ -113,7 +113,6 @@ type GetAlbumQueryOptionsArgs = {
 
 export const getAlbumQueryOptions = (args: GetAlbumQueryOptionsArgs) => {
 	return queryOptions({
-		...paginationPageParamOptions,
 		queryKey: ["album", args.albumId],
 		queryFn: () => getAlbum({ data: args }),
 	});

@@ -1,18 +1,22 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import type { ReviewDoc } from "convex/utils";
 import { decode } from "decode-formdata";
 import type { ComponentProps } from "react";
 import { Button } from "~/ui/button";
-import { patchReviewMutation } from "../../server/reviews";
+import {
+	getReviewQueryOptions,
+	patchReviewMutation,
+} from "../../server/reviews";
 import { ReviewFields } from "./review-fields";
 
 type EditReviewFormProps = {
-	review: ReviewDoc;
+	reviewId: string;
 };
 
-export const EditReviewForm = ({ review }: EditReviewFormProps) => {
+export const EditReviewForm = ({ reviewId }: EditReviewFormProps) => {
 	const navigate = useNavigate();
+
+	const reviewQuery = useSuspenseQuery(getReviewQueryOptions({ reviewId }));
 
 	const mutation = useMutation({
 		mutationFn: (formData: FormData) => {
@@ -21,7 +25,7 @@ export const EditReviewForm = ({ review }: EditReviewFormProps) => {
 		onSuccess: async () => {
 			await navigate({
 				to: "/albums/$albumId",
-				params: { albumId: review.albumId },
+				params: { albumId: reviewQuery.data.albumId },
 			});
 		},
 	});
@@ -33,9 +37,9 @@ export const EditReviewForm = ({ review }: EditReviewFormProps) => {
 
 	return (
 		<form onSubmit={onSubmit} className="flex flex-col gap-2">
-			<input type="hidden" defaultValue={review._id} name="reviewId" />
+			<input type="hidden" defaultValue={reviewId} name="reviewId" />
 
-			<ReviewFields initial={review} />
+			<ReviewFields initial={reviewQuery.data} />
 
 			<Button type="submit">Save review</Button>
 		</form>

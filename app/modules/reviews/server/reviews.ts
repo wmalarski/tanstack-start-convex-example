@@ -1,4 +1,4 @@
-import { infiniteQueryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
@@ -10,6 +10,28 @@ import {
 	paginationPageParamOptions,
 	paginationSchema,
 } from "~/modules/common/utils/query-options";
+
+const getReview = createServerFn({ method: "GET" })
+	.middleware([convexAuthorizedMiddleware])
+	.validator(v.object({ reviewId: v.string() }))
+	.handler(({ context, data }) =>
+		context.convexClient.query(api.reviews.queryReview, {
+			reviewId: data.reviewId as Id<"review">,
+		}),
+	);
+
+type GetReviewQueryOptionsArgs = {
+	reviewId: string;
+};
+
+export const getReviewQueryOptions = ({
+	reviewId,
+}: GetReviewQueryOptionsArgs) => {
+	return queryOptions({
+		queryKey: ["review", reviewId],
+		queryFn: () => getReview({ data: { reviewId } }),
+	});
+};
 
 const getAllReviews = createServerFn({ method: "GET" })
 	.middleware([convexAuthorizedMiddleware])

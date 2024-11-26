@@ -2,7 +2,25 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { getUniqueAlbums, getUniqueArtistsMap, matchReviewData } from "./utils";
+import {
+	getUniqueAlbums,
+	getUniqueArtistsMap,
+	matchReviewData,
+	type ReviewDoc,
+} from "./utils";
+
+export const queryReview = query({
+	args: { reviewId: v.id("review") },
+	handler: async (ctx, args) => {
+		const review = await ctx.db.get(args.reviewId);
+
+		if (!review) {
+			throw new ConvexError("Invalid reviewId");
+		}
+
+		return review as ReviewDoc;
+	},
+});
 
 export const queryReviews = query({
 	args: { paginationOpts: paginationOptsValidator },
