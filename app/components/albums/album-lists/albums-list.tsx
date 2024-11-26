@@ -1,5 +1,5 @@
 import { Button } from "~/components/ui/button";
-import { type AlbumCardData, AlbumsCard } from "../album-card/albums-card";
+import { type AlbumCardData, AlbumCard } from "../album-card/album-card";
 
 type AlbumsListProps = {
 	albums: AlbumCardData[];
@@ -16,7 +16,7 @@ export const AlbumsList = ({
 		<div className="flex flex-col gap-2">
 			<ul>
 				{albums.map((data) => (
-					<AlbumsCard key={data.album._id} data={data} />
+					<AlbumCard key={data.album._id} data={data} />
 				))}
 			</ul>
 			{hasNextPage ? (
