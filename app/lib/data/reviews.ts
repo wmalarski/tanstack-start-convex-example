@@ -51,11 +51,11 @@ export const getArtistReviewsQueryOptions = ({
 		queryFn: ({ pageParam }) =>
 			getArtistReviews({
 				data: {
+					albumId,
 					paginationOpts: {
 						cursor: pageParam,
 						numItems: DEFAULT_PAGE_SIZE,
 					},
-					albumId,
 				},
 			}),
 	});

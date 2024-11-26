@@ -15,20 +15,11 @@ export const ArtistReviewsList = ({ albumId }: ArtistReviewsListProps) => {
 	);
 	const reviews = reviewsQuery.data.pages.flatMap(({ page }) => page);
 
-	const onLoadMoreClick = () => {
-		reviewsQuery.fetchNextPage();
-	};
-
 	return (
-		<div>
-			<ReviewsList reviews={reviews} />
-			<button
-				type="button"
-				onClick={onLoadMoreClick}
-				disabled={!reviewsQuery.hasNextPage}
-			>
-				Load More
-			</button>
-		</div>
+		<ReviewsList
+			reviews={reviews}
+			hasNextPage={reviewsQuery.hasNextPage}
+			onLoadMoreClick={reviewsQuery.fetchNextPage}
+		/>
 	);
 };
