@@ -2,7 +2,12 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
 import { query } from "./_generated/server";
-import { getUniqueArtistsMap, matchAlbumData } from "./utils";
+import {
+	type AlbumDoc,
+	type ArtistDoc,
+	getUniqueArtistsMap,
+	matchAlbumData,
+} from "./utils";
 
 export const queryRandomAlbums = query({
 	args: { paginationOpts: paginationOptsValidator },
@@ -40,7 +45,22 @@ export const queryRandomAlbums = query({
 export const queryAlbum = query({
 	args: { albumId: v.id("album") },
 	handler: async (ctx, args) => {
-		return ctx.db.get(args.albumId);
+		const album = await ctx.db.get(args.albumId);
+
+		if (!album) {
+			throw new ConvexError("Invalid albumId");
+		}
+
+		const artist = await ctx.db.get(album.artistId);
+
+		if (!artist) {
+			throw new ConvexError("Invalid albumId");
+		}
+
+		return {
+			album: album as AlbumDoc,
+			artist: artist as ArtistDoc,
+		};
 	},
 });
 

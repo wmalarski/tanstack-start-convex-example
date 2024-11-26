@@ -5,6 +5,11 @@ export type IdAsString<T> = {
 	[t in keyof T]: T[t] extends { __tableName: string } ? string : T[t];
 };
 
+export type ArtistDoc = IdAsString<Doc<"artist">>;
+export type ReviewDoc = IdAsString<Doc<"review">>;
+export type AlbumDoc = IdAsString<Doc<"album">>;
+export type BookmarkDoc = IdAsString<Doc<"bookmark">>;
+
 export const getUniqueArtistsMap = async (
 	ctx: GenericQueryCtx<DataModel>,
 	albums: Doc<"album">[],
@@ -45,9 +50,9 @@ export const getUniqueAlbums = async (
 };
 
 export type ReviewData = {
-	artist: IdAsString<Doc<"artist">>;
-	review: IdAsString<Doc<"review">>;
-	album: IdAsString<Doc<"album">>;
+	artist: ArtistDoc;
+	review: ReviewDoc;
+	album: AlbumDoc;
 };
 
 export const matchReviewData = (
@@ -76,8 +81,8 @@ export const matchReviewData = (
 };
 
 export type AlbumData = {
-	artist: IdAsString<Doc<"artist">>;
-	album: IdAsString<Doc<"album">>;
+	artist: ArtistDoc;
+	album: AlbumDoc;
 };
 
 export const matchAlbumData = (
@@ -99,9 +104,9 @@ export const matchAlbumData = (
 };
 
 export type BookmarkData = {
-	artist: IdAsString<Doc<"artist">>;
-	bookmark: IdAsString<Doc<"bookmark">>;
-	album: IdAsString<Doc<"album">>;
+	artist: ArtistDoc;
+	bookmark: BookmarkDoc;
+	album: AlbumDoc;
 };
 
 export const matchBookmarkData = (

@@ -1,5 +1,4 @@
-import type { Doc } from "convex/_generated/dataModel";
-import type { IdAsString } from "convex/utils";
+import type { AlbumDoc } from "convex/utils";
 import { Card, CardContent } from "~/ui/card";
 import {
 	Carousel,
@@ -10,7 +9,7 @@ import {
 } from "~/ui/carousel";
 
 type AlbumCoversCarouselProps = {
-	album: IdAsString<Doc<"album">>;
+	album: AlbumDoc;
 };
 
 export const AlbumCoversCarousel = ({ album }: AlbumCoversCarouselProps) => {

@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import type { Doc } from "convex/_generated/dataModel";
-import type { IdAsString } from "convex/utils";
+import type { AlbumDoc, ArtistDoc } from "convex/utils";
 import {
 	Card,
 	CardContent,
@@ -9,11 +8,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/ui/card";
-import { AlbumCoversCarousel } from "../album-covers-carousel";
+import { AlbumActions } from "./album-actions/album-actions";
+import { AlbumCoversCarousel } from "./album-covers-carousel";
 
 export type AlbumCardData = {
-	artist: IdAsString<Doc<"artist">>;
-	album: IdAsString<Doc<"album">>;
+	artist: ArtistDoc;
+	album: AlbumDoc;
 };
 
 type AlbumCardProps = {
@@ -39,7 +39,7 @@ export const AlbumCard = ({ data }: AlbumCardProps) => {
 					<pre>{JSON.stringify(data, null, 2)}</pre>
 				</CardContent>
 				<CardFooter>
-					<p>Card Footer</p>
+					<AlbumActions album={data.album} artist={data.artist} />
 				</CardFooter>
 			</Card>
 		</li>

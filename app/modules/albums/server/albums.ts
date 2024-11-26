@@ -1,8 +1,7 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { api } from "convex/_generated/api";
-import type { Doc, Id } from "convex/_generated/dataModel";
-import type { IdAsString } from "convex/utils";
+import type { Id } from "convex/_generated/dataModel";
 import * as v from "valibot";
 import { convexAuthorizedMiddleware } from "~/modules/common/server/middleware";
 import {
@@ -102,11 +101,10 @@ export const getSearchAlbumsQueryOptions = (
 const getAlbum = createServerFn({ method: "GET" })
 	.middleware([convexAuthorizedMiddleware])
 	.validator(v.object({ albumId: v.string() }))
-	.handler(
-		async ({ context, data }) =>
-			context.convexClient.query(api.albums.queryAlbum, {
-				albumId: data.albumId as Id<"album">,
-			}) as Promise<IdAsString<Doc<"album">>>,
+	.handler(async ({ context, data }) =>
+		context.convexClient.query(api.albums.queryAlbum, {
+			albumId: data.albumId as Id<"album">,
+		}),
 	);
 
 type GetAlbumQueryOptionsArgs = {

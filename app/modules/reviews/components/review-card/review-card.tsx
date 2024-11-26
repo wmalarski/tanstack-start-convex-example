@@ -1,11 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import type { Doc } from "convex/_generated/dataModel";
-import type { IdAsString } from "convex/utils";
+import type { AlbumDoc, ArtistDoc, ReviewDoc } from "convex/utils";
 
 export type ReviewCardData = {
-	artist: IdAsString<Doc<"artist">>;
-	review: IdAsString<Doc<"review">>;
-	album: IdAsString<Doc<"album">>;
+	artist: ArtistDoc;
+	review: ReviewDoc;
+	album: AlbumDoc;
 };
 
 type ReviewCardProps = {

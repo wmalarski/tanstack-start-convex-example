@@ -1,5 +1,5 @@
 import { Button } from "~/ui/button";
-import { type AlbumCardData, AlbumCard } from "../album-card/album-card";
+import { type AlbumCardData, AlbumCard } from "../album-card";
 
 type AlbumsListProps = {
 	albums: AlbumCardData[];
