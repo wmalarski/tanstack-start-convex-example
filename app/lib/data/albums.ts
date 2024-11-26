@@ -1,25 +1,22 @@
 import { infiniteQueryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
 import * as v from "valibot";
 import { DEFAULT_PAGE_SIZE } from "../common/constants";
 import { convexAuthorizedMiddleware } from "../convex/middleware";
-import { paginationSchema, serializeAlbumData } from "./utils";
+import { paginationPageParamOptions, paginationSchema } from "./utils";
 
 const getRandomAlbums = createServerFn({ method: "GET" })
 	.middleware([convexAuthorizedMiddleware])
 	.validator(v.object({ paginationOpts: paginationSchema }))
-	.handler(async ({ context, data }) => {
-		const response = await context.convexClient.query(
-			api.albums.queryRandomAlbums,
-			data,
-		);
-
-		return { ...response, page: serializeAlbumData(response.page) };
-	});
+	.handler(async ({ context, data }) =>
+		context.convexClient.query(api.albums.queryRandomAlbums, data),
+	);
 
 export const getRandomAlbumsQueryOptions = () => {
 	return infiniteQueryOptions({
+		...paginationPageParamOptions,
 		queryKey: ["random-albums"],
 		queryFn: ({ pageParam }) =>
 			getRandomAlbums({
@@ -30,7 +27,70 @@ export const getRandomAlbumsQueryOptions = () => {
 					},
 				},
 			}),
-		getNextPageParam: (lastPage) => lastPage.continueCursor,
-		initialPageParam: null as string | null,
+	});
+};
+
+const getArtistAlbums = createServerFn({ method: "GET" })
+	.middleware([convexAuthorizedMiddleware])
+	.validator(
+		v.object({ paginationOpts: paginationSchema, albumId: v.string() }),
+	)
+	.handler(async ({ context, data }) =>
+		context.convexClient.query(api.albums.queryArtistAlbumsByAlbumId, {
+			...data,
+			albumId: data.albumId as Id<"album">,
+		}),
+	);
+
+type GetArtistAlbumsQueryOptionsArgs = {
+	albumId: string;
+};
+
+export const getArtistAlbumsQueryOptions = ({
+	albumId,
+}: GetArtistAlbumsQueryOptionsArgs) => {
+	return infiniteQueryOptions({
+		...paginationPageParamOptions,
+		queryKey: ["artist-albums"],
+		queryFn: ({ pageParam }) =>
+			getArtistAlbums({
+				data: {
+					albumId,
+					paginationOpts: {
+						cursor: pageParam,
+						numItems: DEFAULT_PAGE_SIZE,
+					},
+				},
+			}),
+	});
+};
+
+const getSearchAlbums = createServerFn({ method: "GET" })
+	.middleware([convexAuthorizedMiddleware])
+	.validator(v.object({ paginationOpts: paginationSchema, term: v.string() }))
+	.handler(async ({ context, data }) =>
+		context.convexClient.query(api.albums.queryAlbumsByTerm, data),
+	);
+
+type GetSearchAlbumsQueryOptionsArgs = {
+	term: string;
+};
+
+export const getSearchAlbumsQueryOptions = ({
+	term,
+}: GetSearchAlbumsQueryOptionsArgs) => {
+	return infiniteQueryOptions({
+		...paginationPageParamOptions,
+		queryKey: ["search-albums"],
+		queryFn: ({ pageParam }) =>
+			getSearchAlbums({
+				data: {
+					term,
+					paginationOpts: {
+						cursor: pageParam,
+						numItems: DEFAULT_PAGE_SIZE,
+					},
+				},
+			}),
 	});
 };

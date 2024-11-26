@@ -1,6 +1,10 @@
 import type { GenericQueryCtx } from "convex/server";
 import type { DataModel, Doc, Id } from "./_generated/dataModel";
 
+export type IdAsString<T> = {
+	[t in keyof T]: T[t] extends { __tableName: string } ? string : T[t];
+};
+
 export const getUniqueArtistsMap = async (
 	ctx: GenericQueryCtx<DataModel>,
 	albums: Doc<"album">[],
@@ -41,9 +45,9 @@ export const getUniqueAlbums = async (
 };
 
 export type ReviewData = {
-	artist: Doc<"artist">;
-	review: Doc<"review">;
-	album: Doc<"album">;
+	artist: IdAsString<Doc<"artist">>;
+	review: IdAsString<Doc<"review">>;
+	album: IdAsString<Doc<"album">>;
 };
 
 export const matchReviewData = (
@@ -72,8 +76,8 @@ export const matchReviewData = (
 };
 
 export type AlbumData = {
-	artist: Doc<"artist">;
-	album: Doc<"album">;
+	artist: IdAsString<Doc<"artist">>;
+	album: IdAsString<Doc<"album">>;
 };
 
 export const matchAlbumData = (
@@ -95,9 +99,9 @@ export const matchAlbumData = (
 };
 
 export type BookmarkData = {
-	artist: Doc<"artist">;
-	bookmark: Doc<"bookmark">;
-	album: Doc<"album">;
+	artist: IdAsString<Doc<"artist">>;
+	bookmark: IdAsString<Doc<"bookmark">>;
+	album: IdAsString<Doc<"album">>;
 };
 
 export const matchBookmarkData = (

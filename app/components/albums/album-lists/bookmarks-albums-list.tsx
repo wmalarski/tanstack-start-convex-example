@@ -1,14 +1,10 @@
-import { api } from "convex/_generated/api";
-import { usePaginatedQuery } from "convex/react";
-import { DEFAULT_PAGE_SIZE } from "~/lib/common/constants";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { getAllBookmarksQueryOptions } from "~/lib/data/bookmarks";
 import { AlbumsList } from "./albums-list";
 
 export const BookmarksAlbumsList = () => {
-	const albumsQuery = usePaginatedQuery(
-		api.bookmarks.queryBookmarks,
-		{},
-		{ initialNumItems: DEFAULT_PAGE_SIZE },
-	);
+	const albumsQuery = useSuspenseInfiniteQuery(getAllBookmarksQueryOptions());
+	const albums = albumsQuery.data.pages.flatMap(({ page }) => page);
 
-	return <AlbumsList albums={albumsQuery.results} />;
+	return <AlbumsList albums={albums} />;
 };

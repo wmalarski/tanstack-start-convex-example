@@ -1,19 +1,5 @@
-import type { AlbumData } from "convex/utils";
+import type { PaginationResult } from "convex/server";
 import * as v from "valibot";
-
-export const serializeAlbumData = (albums: AlbumData[]) => {
-	return albums.map((entry) => ({
-		album: {
-			...entry.album,
-			_id: entry.album._id.toString(),
-			artistId: entry.album.artistId.toString(),
-		},
-		artist: {
-			...entry.artist,
-			_id: entry.artist._id.toString(),
-		},
-	}));
-};
 
 export const paginationSchema = v.object({
 	id: v.optional(v.number()),
@@ -23,3 +9,10 @@ export const paginationSchema = v.object({
 	numItems: v.number(),
 	cursor: v.nullable(v.string()),
 });
+
+export const paginationPageParamOptions = {
+	initialPageParam: null as string | null,
+	getNextPageParam: (lastPage: PaginationResult<unknown>) => {
+		return lastPage.isDone ? null : lastPage.continueCursor;
+	},
+};

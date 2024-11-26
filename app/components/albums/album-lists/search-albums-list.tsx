@@ -1,6 +1,5 @@
-import { api } from "convex/_generated/api";
-import { usePaginatedQuery } from "convex/react";
-import { DEFAULT_PAGE_SIZE } from "~/lib/common/constants";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { getSearchAlbumsQueryOptions } from "~/lib/data/albums";
 import { AlbumsList } from "./albums-list";
 
 type SearchAlbumsListProps = {
@@ -8,11 +7,10 @@ type SearchAlbumsListProps = {
 };
 
 export const SearchAlbumsList = ({ term }: SearchAlbumsListProps) => {
-	const albumsQuery = usePaginatedQuery(
-		api.albums.queryAlbumsByTerm,
-		{ term },
-		{ initialNumItems: DEFAULT_PAGE_SIZE },
+	const albumsQuery = useSuspenseInfiniteQuery(
+		getSearchAlbumsQueryOptions({ term }),
 	);
+	const albums = albumsQuery.data.pages.flatMap(({ page }) => page);
 
-	return <AlbumsList albums={albumsQuery.results} />;
+	return <AlbumsList albums={albums} />;
 };

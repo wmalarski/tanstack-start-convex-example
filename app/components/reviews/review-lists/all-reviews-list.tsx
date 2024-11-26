@@ -1,26 +1,22 @@
-import { api } from "convex/_generated/api";
-import { usePaginatedQuery } from "convex/react";
-import { DEFAULT_PAGE_SIZE } from "~/lib/common/constants";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { getAllReviewsQueryOptions } from "~/lib/data/reviews";
 import { ReviewsList } from "./reviews-list";
 
 export const AllReviewsList = () => {
-	const reviewsQuery = usePaginatedQuery(
-		api.reviews.queryReviews,
-		{},
-		{ initialNumItems: DEFAULT_PAGE_SIZE },
-	);
+	const reviewsQuery = useSuspenseInfiniteQuery(getAllReviewsQueryOptions());
+	const reviews = reviewsQuery.data.pages.flatMap(({ page }) => page);
 
 	const onLoadMoreClick = () => {
-		reviewsQuery.loadMore(DEFAULT_PAGE_SIZE);
+		reviewsQuery.fetchNextPage();
 	};
 
 	return (
 		<div>
-			<ReviewsList reviews={reviewsQuery.results} />
+			<ReviewsList reviews={reviews} />
 			<button
 				type="button"
 				onClick={onLoadMoreClick}
-				disabled={reviewsQuery.status !== "CanLoadMore"}
+				disabled={!reviewsQuery.hasNextPage}
 			>
 				Load More
 			</button>

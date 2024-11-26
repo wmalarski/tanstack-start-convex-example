@@ -1,7 +1,6 @@
-import { api } from "convex/_generated/api";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import type { Id } from "convex/_generated/dataModel";
-import { usePaginatedQuery } from "convex/react";
-import { DEFAULT_PAGE_SIZE } from "~/lib/common/constants";
+import { getArtistReviewsQueryOptions } from "~/lib/data/reviews";
 import { ReviewsList } from "./reviews-list";
 
 type ArtistReviewsListProps = {
@@ -9,23 +8,24 @@ type ArtistReviewsListProps = {
 };
 
 export const ArtistReviewsList = ({ albumId }: ArtistReviewsListProps) => {
-	const reviewsQuery = usePaginatedQuery(
-		api.reviews.queryReviewsByArtistAlbumId,
-		{ albumId },
-		{ initialNumItems: DEFAULT_PAGE_SIZE },
+	const reviewsQuery = useSuspenseInfiniteQuery(
+		getArtistReviewsQueryOptions({
+			albumId,
+		}),
 	);
+	const reviews = reviewsQuery.data.pages.flatMap(({ page }) => page);
 
 	const onLoadMoreClick = () => {
-		reviewsQuery.loadMore(DEFAULT_PAGE_SIZE);
+		reviewsQuery.fetchNextPage();
 	};
 
 	return (
 		<div>
-			<ReviewsList reviews={reviewsQuery.results} />
+			<ReviewsList reviews={reviews} />
 			<button
 				type="button"
 				onClick={onLoadMoreClick}
-				disabled={reviewsQuery.status !== "CanLoadMore"}
+				disabled={!reviewsQuery.hasNextPage}
 			>
 				Load More
 			</button>

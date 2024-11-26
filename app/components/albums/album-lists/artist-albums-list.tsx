@@ -1,7 +1,6 @@
-import { api } from "convex/_generated/api";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import type { Id } from "convex/_generated/dataModel";
-import { usePaginatedQuery } from "convex/react";
-import { DEFAULT_PAGE_SIZE } from "~/lib/common/constants";
+import { getArtistAlbumsQueryOptions } from "~/lib/data/albums";
 import { AlbumsList } from "./albums-list";
 
 type ArtistAlbumsListProps = {
@@ -9,11 +8,10 @@ type ArtistAlbumsListProps = {
 };
 
 export const ArtistAlbumsList = ({ albumId }: ArtistAlbumsListProps) => {
-	const albumsQuery = usePaginatedQuery(
-		api.albums.queryArtistAlbumsByAlbumId,
-		{ albumId },
-		{ initialNumItems: DEFAULT_PAGE_SIZE },
+	const albumsQuery = useSuspenseInfiniteQuery(
+		getArtistAlbumsQueryOptions({ albumId }),
 	);
+	const albums = albumsQuery.data.pages.flatMap(({ page }) => page);
 
-	return <AlbumsList albums={albumsQuery.results} />;
+	return <AlbumsList albums={albums} />;
 };
