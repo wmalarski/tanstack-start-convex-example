@@ -1,8 +1,8 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { Suspense } from "react";
-import { AlbumHero } from "~/components/albums/album-hero";
-import { ArtistAlbumsList } from "~/components/albums/album-lists/artist-albums-list";
-import { ArtistReviewsList } from "~/components/reviews/review-lists/artist-reviews-list";
+import { AlbumHero } from "~/modules/albums/components/album-hero";
+import { ArtistAlbumsList } from "~/modules/albums/components/album-lists/artist-albums-list";
+import { ArtistReviewsList } from "~/modules/reviews/components/review-lists/artist-reviews-list";
 
 const RouteComponent = () => {
 	const params = useParams({ from: "/albums/$albumId/" });

@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { SignInForm } from "~/components/auth/sign-in-form";
-import { getSessionCookie } from "~/lib/auth/server-functions";
+import { SignInForm } from "~/modules/auth/components/sign-in-form";
+import { getSessionCookie } from "~/modules/auth/server/server-functions";
 
 const SignIn = () => {
 	return <SignInForm />;

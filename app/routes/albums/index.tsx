@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Suspense } from "react";
-import { RandomAlbumsList } from "~/components/albums/album-lists/random-albums-list";
-import { getSessionCookie } from "~/lib/auth/server-functions";
+import { RandomAlbumsList } from "~/modules/albums/components/album-lists/random-albums-list";
+import { getSessionCookie } from "~/modules/auth/server/server-functions";
 
 const RouteComponent = () => {
 	return (

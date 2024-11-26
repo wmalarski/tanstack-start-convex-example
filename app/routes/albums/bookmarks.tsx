@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
-import { BookmarksAlbumsList } from "~/components/albums/album-lists/bookmarks-albums-list";
+import { BookmarksAlbumsList } from "~/modules/albums/components/album-lists/bookmarks-albums-list";
 
 const RouteComponent = () => {
 	return (

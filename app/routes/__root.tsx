@@ -7,9 +7,9 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
 import type { PropsWithChildren } from "react";
-import { DefaultCatchBoundary } from "~/components/common/default-catch-boundary";
-import { NotFound } from "~/components/common/not-found";
-import { seo } from "~/lib/common/seo";
+import { DefaultCatchBoundary } from "~/modules/common/components/default-catch-boundary";
+import { NotFound } from "~/modules/common/components/not-found";
+import { seo } from "~/modules/common/utils/seo";
 import appCss from "~/styles/app.css?url";
 
 export const RootDocument = ({ children }: PropsWithChildren) => {

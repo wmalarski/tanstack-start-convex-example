@@ -1,5 +1,5 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
-import { TopNavbar } from "~/components/common/top-navbar";
+import { TopNavbar } from "~/modules/common/components/top-navbar";
 
 const RouteComponent = () => {
 	return (
