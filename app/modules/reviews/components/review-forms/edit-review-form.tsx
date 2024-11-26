@@ -1,29 +1,41 @@
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import type { ReviewDoc } from "convex/utils";
 import { decode } from "decode-formdata";
-import type { ComponentProps, PropsWithChildren } from "react";
+import type { ComponentProps } from "react";
 import { Button } from "~/ui/button";
-import { signInMutation } from "../server/server-functions";
+import { patchReviewMutation } from "../../server/reviews";
 import { ReviewFields } from "./review-fields";
 
-export const AuthForm = ({ children }: PropsWithChildren) => {
-	return { children };
+type EditReviewFormProps = {
+	review: ReviewDoc;
 };
 
-export const EditReviewForm = () => {
+export const EditReviewForm = ({ review }: EditReviewFormProps) => {
 	const navigate = useNavigate();
+
+	const mutation = useMutation({
+		mutationFn: (formData: FormData) => {
+			return patchReviewMutation({ data: decode(formData) });
+		},
+		onSuccess: async () => {
+			await navigate({
+				to: "/albums/$albumId",
+				params: { albumId: review.albumId },
+			});
+		},
+	});
 
 	const onSubmit: ComponentProps<"form">["onSubmit"] = async (event) => {
 		event.preventDefault();
-
-		const formData = new FormData(event.currentTarget);
-		await signInMutation({ data: decode(formData) });
-
-		await navigate({ to: "/" });
+		mutation.mutate(new FormData(event.currentTarget));
 	};
 
 	return (
 		<form onSubmit={onSubmit} className="flex flex-col gap-2">
-			<ReviewFields />
+			<input type="hidden" defaultValue={review._id} name="reviewId" />
+
+			<ReviewFields initial={review} />
 
 			<Button type="submit">Save review</Button>
 		</form>
