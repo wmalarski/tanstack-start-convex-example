@@ -1,7 +1,8 @@
-import { infiniteQueryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { api } from "convex/_generated/api";
-import type { Id } from "convex/_generated/dataModel";
+import type { Doc, Id } from "convex/_generated/dataModel";
+import type { IdAsString } from "convex/utils";
 import * as v from "valibot";
 import { DEFAULT_PAGE_SIZE } from "../common/constants";
 import { convexAuthorizedMiddleware } from "../convex/middleware";
@@ -46,16 +47,16 @@ type GetArtistAlbumsQueryOptionsArgs = {
 	albumId: string;
 };
 
-export const getArtistAlbumsQueryOptions = ({
-	albumId,
-}: GetArtistAlbumsQueryOptionsArgs) => {
+export const getArtistAlbumsQueryOptions = (
+	args: GetArtistAlbumsQueryOptionsArgs,
+) => {
 	return infiniteQueryOptions({
 		...paginationPageParamOptions,
 		queryKey: ["artist-albums"],
 		queryFn: ({ pageParam }) =>
 			getArtistAlbums({
 				data: {
-					albumId,
+					...args,
 					paginationOpts: {
 						cursor: pageParam,
 						numItems: DEFAULT_PAGE_SIZE,
@@ -76,21 +77,43 @@ type GetSearchAlbumsQueryOptionsArgs = {
 	term: string;
 };
 
-export const getSearchAlbumsQueryOptions = ({
-	term,
-}: GetSearchAlbumsQueryOptionsArgs) => {
+export const getSearchAlbumsQueryOptions = (
+	args: GetSearchAlbumsQueryOptionsArgs,
+) => {
 	return infiniteQueryOptions({
 		...paginationPageParamOptions,
 		queryKey: ["search-albums"],
 		queryFn: ({ pageParam }) =>
 			getSearchAlbums({
 				data: {
-					term,
+					...args,
 					paginationOpts: {
 						cursor: pageParam,
 						numItems: DEFAULT_PAGE_SIZE,
 					},
 				},
 			}),
+	});
+};
+
+const getAlbum = createServerFn({ method: "GET" })
+	.middleware([convexAuthorizedMiddleware])
+	.validator(v.object({ albumId: v.string() }))
+	.handler(
+		async ({ context, data }) =>
+			context.convexClient.query(api.albums.queryAlbum, {
+				albumId: data.albumId as Id<"album">,
+			}) as Promise<IdAsString<Doc<"album">>>,
+	);
+
+type GetAlbumQueryOptionsArgs = {
+	albumId: string;
+};
+
+export const getAlbumQueryOptions = (args: GetAlbumQueryOptionsArgs) => {
+	return queryOptions({
+		...paginationPageParamOptions,
+		queryKey: ["album", args.albumId],
+		queryFn: () => getAlbum({ data: args }),
 	});
 };
