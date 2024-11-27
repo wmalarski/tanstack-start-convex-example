@@ -40,5 +40,5 @@ export default defineSchema({
 	bookmark: defineTable({
 		albumId: v.id("album"),
 		userId: v.id("users"),
-	}).index("bookmarkUsers", ["userId"]),
+	}).index("bookmarkUsersAlbums", ["userId", "albumId"]),
 });

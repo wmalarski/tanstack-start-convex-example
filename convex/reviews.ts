@@ -124,3 +124,22 @@ export const patchReviewMutation = mutation({
 		return ctx.db.patch(review._id, { text, rate });
 	},
 });
+
+export const deleteReviewMutation = mutation({
+	args: { reviewId: v.id("review") },
+	handler: async (ctx, args) => {
+		const userId = await getAuthUserId(ctx);
+
+		if (!userId) {
+			throw new ConvexError("User is unauthorized");
+		}
+
+		const review = await ctx.db.get(args.reviewId);
+
+		if (userId !== review?.userId) {
+			throw new ConvexError("User is unauthorized");
+		}
+
+		return ctx.db.delete(args.reviewId);
+	},
+});
