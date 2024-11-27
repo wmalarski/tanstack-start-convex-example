@@ -1,4 +1,10 @@
-import type { GenericQueryCtx } from "convex/server";
+import { getAuthUserId } from "@convex-dev/auth/server";
+import type {
+	DocumentByName,
+	GenericQueryCtx,
+	TableNamesInDataModel,
+} from "convex/server";
+import { ConvexError, type GenericId } from "convex/values";
 import type { DataModel, Doc, Id } from "./_generated/dataModel";
 
 export type IdAsString<T> = {
@@ -132,4 +138,29 @@ export const matchBookmarkData = (
 	});
 
 	return page;
+};
+
+export const getUserIdOrThrow = async (ctx: GenericQueryCtx<DataModel>) => {
+	const userId = await getAuthUserId(ctx);
+
+	if (!userId) {
+		throw new ConvexError("User is unauthorized");
+	}
+
+	return userId;
+};
+
+export const getDocOrThrow = async <
+	TableName extends TableNamesInDataModel<DataModel>,
+>(
+	ctx: GenericQueryCtx<DataModel>,
+	id: GenericId<TableName>,
+): Promise<DocumentByName<DataModel, TableName>> => {
+	const result = await ctx.db.get(id);
+
+	if (!result) {
+		throw new ConvexError("Invalid id");
+	}
+
+	return result;
 };

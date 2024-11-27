@@ -1,10 +1,11 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
+	getDocOrThrow,
 	getUniqueAlbums,
 	getUniqueArtistsMap,
+	getUserIdOrThrow,
 	matchReviewData,
 	type ReviewDoc,
 } from "./utils";
@@ -12,11 +13,9 @@ import {
 export const queryReview = query({
 	args: { reviewId: v.id("review") },
 	handler: async (ctx, args) => {
-		const review = await ctx.db.get(args.reviewId);
+		await getUserIdOrThrow(ctx);
 
-		if (!review) {
-			throw new ConvexError("Invalid reviewId");
-		}
+		const review = await getDocOrThrow(ctx, args.reviewId);
 
 		return review as ReviewDoc;
 	},
@@ -25,11 +24,7 @@ export const queryReview = query({
 export const queryReviews = query({
 	args: { paginationOpts: paginationOptsValidator },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
-
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
+		const userId = await getUserIdOrThrow(ctx);
 
 		const reviews = await ctx.db
 			.query("review")
@@ -50,17 +45,9 @@ export const queryReviews = query({
 export const queryReviewsByArtistAlbumId = query({
 	args: { paginationOpts: paginationOptsValidator, albumId: v.id("album") },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
+		await getUserIdOrThrow(ctx);
 
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
-
-		const album = await ctx.db.get(args.albumId);
-
-		if (!album) {
-			throw new ConvexError("Invalid albumId");
-		}
+		const album = await getDocOrThrow(ctx, args.albumId);
 
 		const albums = await ctx.db
 			.query("album")
@@ -92,11 +79,7 @@ export const createReviewMutation = mutation({
 		rate: v.number(),
 	},
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
-
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
+		const userId = await getUserIdOrThrow(ctx);
 
 		return ctx.db.insert("review", { ...args, userId }) as Promise<string>;
 	},
@@ -109,15 +92,10 @@ export const patchReviewMutation = mutation({
 		rate: v.number(),
 	},
 	handler: async (ctx, { rate, reviewId, text }) => {
-		const userId = await getAuthUserId(ctx);
+		const userId = await getUserIdOrThrow(ctx);
+		const review = await getDocOrThrow(ctx, reviewId);
 
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
-
-		const review = await ctx.db.get(reviewId);
-
-		if (review?.userId !== userId) {
+		if (review.userId !== userId) {
 			throw new ConvexError("User is unauthorized");
 		}
 
@@ -128,15 +106,10 @@ export const patchReviewMutation = mutation({
 export const deleteReviewMutation = mutation({
 	args: { reviewId: v.id("review") },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
+		const userId = await getUserIdOrThrow(ctx);
+		const review = await getDocOrThrow(ctx, args.reviewId);
 
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
-
-		const review = await ctx.db.get(args.reviewId);
-
-		if (userId !== review?.userId) {
+		if (userId !== review.userId) {
 			throw new ConvexError("User is unauthorized");
 		}
 

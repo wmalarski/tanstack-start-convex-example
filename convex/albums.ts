@@ -1,22 +1,19 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
-import { ConvexError, v } from "convex/values";
+import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
 	type AlbumDoc,
 	type ArtistDoc,
+	getDocOrThrow,
 	getUniqueArtistsMap,
+	getUserIdOrThrow,
 	matchAlbumData,
 } from "./utils";
 
 export const queryRandomAlbums = query({
 	args: { paginationOpts: paginationOptsValidator },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
-
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
+		const userId = await getUserIdOrThrow(ctx);
 
 		const reviews = await ctx.db
 			.query("review")
@@ -45,17 +42,10 @@ export const queryRandomAlbums = query({
 export const queryAlbum = query({
 	args: { albumId: v.id("album") },
 	handler: async (ctx, args) => {
-		const album = await ctx.db.get(args.albumId);
+		await getUserIdOrThrow(ctx);
 
-		if (!album) {
-			throw new ConvexError("Invalid albumId");
-		}
-
-		const artist = await ctx.db.get(album.artistId);
-
-		if (!artist) {
-			throw new ConvexError("Invalid albumId");
-		}
+		const album = await getDocOrThrow(ctx, args.albumId);
+		const artist = await getDocOrThrow(ctx, album.artistId);
 
 		return {
 			album: album as AlbumDoc,
@@ -70,11 +60,9 @@ export const queryArtistAlbumsByAlbumId = query({
 		albumId: v.id("album"),
 	},
 	handler: async (ctx, args) => {
-		const album = await ctx.db.get(args.albumId);
+		await getUserIdOrThrow(ctx);
 
-		if (!album) {
-			throw new ConvexError("Invalid albumId");
-		}
+		const album = await getDocOrThrow(ctx, args.albumId);
 
 		const albums = await ctx.db
 			.query("album")
@@ -93,6 +81,8 @@ export const queryAlbumsByTerm = query({
 		term: v.string(),
 	},
 	handler: async (ctx, args) => {
+		await getUserIdOrThrow(ctx);
+
 		const albums = await ctx.db
 			.query("album")
 			.withSearchIndex("albumSearch", (q) => q.search("title", args.term))
@@ -111,11 +101,7 @@ export const patchAlbumMutation = mutation({
 		year: v.number(),
 	},
 	handler: async (ctx, { albumId, title, year }) => {
-		const userId = await getAuthUserId(ctx);
-
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
+		await getUserIdOrThrow(ctx);
 
 		return ctx.db.patch(albumId, { title, year });
 	},

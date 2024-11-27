@@ -1,22 +1,19 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
 	type BookmarkDoc,
+	getDocOrThrow,
 	getUniqueAlbums,
 	getUniqueArtistsMap,
+	getUserIdOrThrow,
 	matchBookmarkData,
 } from "./utils";
 
 export const queryBookmarks = query({
 	args: { paginationOpts: paginationOptsValidator },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
-
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
+		const userId = await getUserIdOrThrow(ctx);
 
 		const bookmarks = await ctx.db
 			.query("bookmark")
@@ -37,11 +34,7 @@ export const queryBookmarks = query({
 export const queryBookmark = query({
 	args: { albumId: v.id("album") },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
-
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
+		const userId = await getUserIdOrThrow(ctx);
 
 		const bookmark = await ctx.db
 			.query("bookmark")
@@ -57,11 +50,7 @@ export const queryBookmark = query({
 export const createBookmarkMutation = mutation({
 	args: { albumId: v.id("album") },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
-
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
+		const userId = await getUserIdOrThrow(ctx);
 
 		return ctx.db.insert("bookmark", { ...args, userId }) as Promise<string>;
 	},
@@ -70,15 +59,10 @@ export const createBookmarkMutation = mutation({
 export const deleteBookmarkMutation = mutation({
 	args: { bookmarkId: v.id("bookmark") },
 	handler: async (ctx, args) => {
-		const userId = await getAuthUserId(ctx);
+		const userId = await getUserIdOrThrow(ctx);
+		const bookmark = await getDocOrThrow(ctx, args.bookmarkId);
 
-		if (!userId) {
-			throw new ConvexError("User is unauthorized");
-		}
-
-		const bookmark = await ctx.db.get(args.bookmarkId);
-
-		if (userId !== bookmark?.userId) {
+		if (userId !== bookmark.userId) {
 			throw new ConvexError("User is unauthorized");
 		}
 
