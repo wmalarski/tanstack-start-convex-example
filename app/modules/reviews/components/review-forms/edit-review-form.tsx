@@ -41,7 +41,9 @@ export const EditReviewForm = ({ reviewId }: EditReviewFormProps) => {
 
 			<ReviewFields initial={reviewQuery.data} />
 
-			<Button type="submit">Save review</Button>
+			<Button disabled={mutation.isPending} type="submit">
+				Save review
+			</Button>
 		</form>
 	);
 };

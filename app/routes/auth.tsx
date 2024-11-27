@@ -1,14 +1,21 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { getSessionCookie } from "~/modules/auth/server/server-functions";
 
-export const Route = createFileRoute("/auth")({
-	component: RouteComponent,
-});
-
-function RouteComponent() {
+const RouteComponent = () => {
 	return (
 		<div className="mx-auto w-screen">
 			Auth
 			<Outlet />
 		</div>
 	);
-}
+};
+
+export const Route = createFileRoute("/auth")({
+	component: RouteComponent,
+	beforeLoad: async () => {
+		const token = await getSessionCookie();
+		if (token) {
+			throw redirect({ to: "/albums" });
+		}
+	},
+});

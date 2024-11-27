@@ -1,11 +1,30 @@
-import { Link } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { decode } from "decode-formdata";
+import type { ComponentProps } from "react";
 import { Button, buttonVariants } from "~/ui/button";
+import { signInMutation } from "../server/server-functions";
 import { AuthFields } from "./auth-fields";
-import { AuthForm } from "./auth-form";
 
 export const SignInForm = () => {
+	const navigate = useNavigate();
+
+	const mutation = useMutation({
+		mutationFn: (formData: FormData) => {
+			return signInMutation({ data: decode(formData) });
+		},
+		onSuccess: async () => {
+			await navigate({ to: "/" });
+		},
+	});
+
+	const onSubmit: ComponentProps<"form">["onSubmit"] = async (event) => {
+		event.preventDefault();
+		mutation.mutate(new FormData(event.currentTarget));
+	};
+
 	return (
-		<AuthForm>
+		<form onSubmit={onSubmit} className="flex flex-col gap-2">
 			<input name="flow" type="hidden" value="signIn" />
 
 			<AuthFields />
@@ -15,6 +34,6 @@ export const SignInForm = () => {
 				Sign up instead
 			</Link>
 			<Link to="/">Back</Link>
-		</AuthForm>
+		</form>
 	);
 };

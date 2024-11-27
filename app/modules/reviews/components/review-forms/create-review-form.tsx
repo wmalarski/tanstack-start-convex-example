@@ -33,7 +33,9 @@ export const CreateReviewForm = ({ albumId }: CreateReviewFormProps) => {
 
 			<ReviewFields />
 
-			<Button type="submit">Create Review</Button>
+			<Button disabled={mutation.isPending} type="submit">
+				Create Review
+			</Button>
 		</form>
 	);
 };

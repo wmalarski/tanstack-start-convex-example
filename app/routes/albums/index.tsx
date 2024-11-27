@@ -1,7 +1,7 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { RandomAlbumsList } from "~/modules/albums/components/album-lists/random-albums-list";
-import { getSessionCookie } from "~/modules/auth/server/server-functions";
+import { getRandomAlbumsQueryOptions } from "~/modules/albums/server/albums";
 
 const RouteComponent = () => {
 	return (
@@ -15,10 +15,9 @@ const RouteComponent = () => {
 
 export const Route = createFileRoute("/albums/")({
 	component: RouteComponent,
-	beforeLoad: async () => {
-		const token = await getSessionCookie();
-		if (!token) {
-			throw redirect({ to: "/auth/sign-in" });
-		}
+	loader: async ({ context }) => {
+		await context.queryClient.ensureInfiniteQueryData(
+			getRandomAlbumsQueryOptions(),
+		);
 	},
 });
