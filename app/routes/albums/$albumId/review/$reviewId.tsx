@@ -1,6 +1,5 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { Suspense } from "react";
-import { AlbumHero } from "~/modules/albums/components/album-hero";
 import { EditReviewForm } from "~/modules/reviews/components/review-forms/edit-review-form";
 import { getReviewQueryOptions } from "~/modules/reviews/server/reviews";
 
@@ -9,9 +8,6 @@ const RouteComponent = () => {
 
 	return (
 		<div>
-			<Suspense>
-				<AlbumHero albumId={params.albumId} />
-			</Suspense>
 			<Suspense>
 				<EditReviewForm reviewId={params.reviewId} />
 			</Suspense>

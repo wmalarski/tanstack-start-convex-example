@@ -1,17 +1,8 @@
-import { useAuthActions } from "@convex-dev/auth/react";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { Button, buttonVariants } from "~/ui/button";
+import { Link } from "@tanstack/react-router";
+import { SignOutButton } from "~/modules/auth/components/sign-out-button";
+import { buttonVariants } from "~/ui/button";
 
 export const TopNavbar = () => {
-	const navigate = useNavigate();
-
-	const { signOut } = useAuthActions();
-
-	const onSignOutClick = async () => {
-		await signOut();
-		await navigate({ to: "/auth/sign-in" });
-	};
-
 	return (
 		<nav>
 			<ul className="flex gap-2 p-1">
@@ -42,7 +33,7 @@ export const TopNavbar = () => {
 					</Link>
 				</li>
 				<li>
-					<Button onClick={onSignOutClick}>Sign Out</Button>
+					<SignOutButton />
 				</li>
 			</ul>
 		</nav>

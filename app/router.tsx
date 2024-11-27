@@ -21,6 +21,7 @@ export const createRouter = () => {
 			context: { queryClient },
 			defaultErrorComponent: DefaultCatchBoundary,
 			defaultNotFoundComponent: () => <NotFound />,
+			defaultSsr: false,
 		}),
 		queryClient,
 	);

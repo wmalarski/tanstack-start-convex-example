@@ -4,7 +4,7 @@ const JWT_TOKEN_COOKIE_NAME = "__convexAuthJWT";
 const REFRESH_TOKEN_COOKIE_NAME = "__convexAuthRefresh";
 
 const BASE_COOKIE_OPTIONS = { path: "/", secure: import.meta.env.PROD };
-const COOKIE_OPTIONS = { ...BASE_COOKIE_OPTIONS, maxAge: 60 * 10 };
+const COOKIE_OPTIONS = { ...BASE_COOKIE_OPTIONS, maxAge: 60 * 60 };
 
 export const getSessionJwtToken = () => {
 	return getCookie(getEvent(), JWT_TOKEN_COOKIE_NAME);
