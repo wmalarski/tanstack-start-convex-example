@@ -1,5 +1,5 @@
 import type { AlbumDoc, ArtistDoc } from "convex/utils";
-import { createContext, useContext, type PropsWithChildren } from "react";
+import { type PropsWithChildren, createContext, useContext } from "react";
 
 type AlbumContextValue = {
 	album: AlbumDoc;

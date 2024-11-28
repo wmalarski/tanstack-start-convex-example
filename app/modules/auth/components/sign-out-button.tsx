@@ -16,10 +16,8 @@ export const SignOutButton = () => {
 	});
 
 	const onSignOutClick = async () => {
-		mutation.mutate()
+		mutation.mutate();
 	};
 
-	return (
-					<Button onClick={onSignOutClick}>Sign Out</Button>
-	);
+	return <Button onClick={onSignOutClick}>Sign Out</Button>;
 };

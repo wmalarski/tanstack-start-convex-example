@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, useParams } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useParams } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { AlbumHero } from "~/modules/albums/components/album-hero";
 import { getAlbumQueryOptions } from "~/modules/albums/server/albums";

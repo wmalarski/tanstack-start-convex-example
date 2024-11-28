@@ -30,10 +30,6 @@
 				"useBlockStatements": "error",
 				"useCollapsedElseIf": "error",
 				"useConsistentArrayType": "error",
-				"useFilenamingConvention": {
-					"level": "error",
-					"options": { "filenameCases": ["kebab-case"], "requireAscii": true }
-				},
 				"useFragmentSyntax": "error"
 			},
 			"nursery": {
