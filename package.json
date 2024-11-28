@@ -8,7 +8,8 @@
 		"build": "vinxi build",
 		"start": "vinxi start",
 		"format-and-lint": "biome check .",
-		"format-and-lint:fix": "biome check . --write"
+		"format-and-lint:fix": "biome check . --write",
+		"tsc": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@convex-dev/auth": "^0.0.74",

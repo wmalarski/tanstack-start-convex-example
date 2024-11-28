@@ -2,12 +2,11 @@ import { Link } from "@tanstack/react-router";
 import type { AlbumDoc, ArtistDoc } from "convex/utils";
 import {
 	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
+	CardContent, CardFooter,
 	CardHeader,
-	CardTitle,
+	CardTitle
 } from "~/ui/card";
+import { formatAlbumTitle } from "../utils/format";
 import { AlbumActions } from "./album-actions/album-actions";
 import { AlbumCoversCarousel } from "./album-covers-carousel";
 
@@ -31,12 +30,10 @@ export const AlbumCard = ({ data }: AlbumCardProps) => {
 					aria-label="Details"
 				/>
 				<CardHeader>
-					<CardTitle>Card Title</CardTitle>
-					<CardDescription>Card Description</CardDescription>
+					<CardTitle>{formatAlbumTitle(data)}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<AlbumCoversCarousel album={data.album} />
-					<pre>{JSON.stringify(data, null, 2)}</pre>
+					<AlbumCoversCarousel album={data.album} size="s250" />
 				</CardContent>
 				<CardFooter>
 					<AlbumActions album={data.album} artist={data.artist} />

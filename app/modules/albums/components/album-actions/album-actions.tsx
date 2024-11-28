@@ -1,4 +1,6 @@
 import type { AlbumDoc, ArtistDoc } from "convex/utils";
+import { AlbumDetailsLink } from "./album-details-link";
+import { AlbumYoutubeButton } from "./album-youtube-button";
 
 type AlbumActionsProps = {
 	artist: ArtistDoc;
@@ -6,5 +8,11 @@ type AlbumActionsProps = {
 };
 
 export const AlbumActions = ({ album, artist }: AlbumActionsProps) => {
-	return <pre>{JSON.stringify({ album, artist }, null, 2)}</pre>;
+	return (
+		<div>
+			<AlbumYoutubeButton album={album} artist={artist} />
+			<AlbumDetailsLink album={album} />
+			<pre>{JSON.stringify({ album, artist }, null, 2)}</pre>
+		</div>
+	);
 };

@@ -13,7 +13,7 @@ export const AlbumHero = ({ albumId }: AlbumHeroProps) => {
 	return (
 		<div>
 			<pre>{JSON.stringify(albumQuery.data, null, 2)}</pre>
-			<AlbumCoversCarousel album={albumQuery.data.album} />
+			<AlbumCoversCarousel size="large" album={albumQuery.data.album} />
 			<AlbumActions
 				artist={albumQuery.data.artist}
 				album={albumQuery.data.album}

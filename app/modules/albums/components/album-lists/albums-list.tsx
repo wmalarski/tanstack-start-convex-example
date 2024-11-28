@@ -14,7 +14,7 @@ export const AlbumsList = ({
 }: AlbumsListProps) => {
 	return (
 		<div className="flex flex-col gap-2">
-			<ul>
+			<ul className="grid gap-2">
 				{albums.map((data) => (
 					<AlbumCard key={data.album._id} data={data} />
 				))}

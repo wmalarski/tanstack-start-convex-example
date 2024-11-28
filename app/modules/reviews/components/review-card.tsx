@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { AlbumDoc, ArtistDoc, ReviewDoc } from "convex/utils";
+import { ReviewActions } from "./review-actions/review-actions";
 
 export type ReviewCardData = {
 	artist: ArtistDoc;
@@ -19,6 +20,11 @@ export const ReviewCard = ({ data }: ReviewCardProps) => {
 				params={{ albumId: data.album._id }}
 				className="absolute inset-0"
 				aria-label="Album details"
+			/>
+			<ReviewActions
+				album={data.album}
+				artist={data.artist}
+				review={data.review}
 			/>
 			<pre>{JSON.stringify(data, null, 2)}</pre>
 		</li>
