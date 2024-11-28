@@ -7,16 +7,15 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "~/ui/carousel";
+import { useAlbumContext } from "./album-context";
 
 type AlbumCoversCarouselProps = {
-	album: AlbumDoc;
 	size: keyof NonNullable<AlbumDoc["covers"]>;
 };
 
-export const AlbumCoversCarousel = ({
-	album,
-	size,
-}: AlbumCoversCarouselProps) => {
+export const AlbumCoversCarousel = ({ size }: AlbumCoversCarouselProps) => {
+	const { album } = useAlbumContext();
+
 	const covers = album.covers?.[size];
 
 	if (!covers || covers.length === 0) {

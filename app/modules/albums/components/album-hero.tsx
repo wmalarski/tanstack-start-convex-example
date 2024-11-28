@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getAlbumQueryOptions } from "../server/albums";
 import { AlbumActions } from "./album-actions/album-actions";
+import { AlbumContextProvider } from "./album-context";
 import { AlbumCoversCarousel } from "./album-covers-carousel";
 
 type AlbumHeroProps = {
@@ -11,13 +12,12 @@ export const AlbumHero = ({ albumId }: AlbumHeroProps) => {
 	const albumQuery = useSuspenseQuery(getAlbumQueryOptions({ albumId }));
 
 	return (
-		<div>
-			<pre>{JSON.stringify(albumQuery.data, null, 2)}</pre>
-			<AlbumCoversCarousel size="large" album={albumQuery.data.album} />
-			<AlbumActions
-				artist={albumQuery.data.artist}
-				album={albumQuery.data.album}
-			/>
-		</div>
+		<AlbumContextProvider {...albumQuery.data}>
+			<div>
+				<pre>{JSON.stringify(albumQuery.data, null, 2)}</pre>
+				<AlbumCoversCarousel size="large" />
+				<AlbumActions />
+			</div>
+		</AlbumContextProvider>
 	);
 };

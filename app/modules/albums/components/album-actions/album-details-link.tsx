@@ -1,11 +1,9 @@
-import type { AlbumDoc } from "convex/utils";
 import { buttonVariants } from "~/ui/button";
+import { useAlbumContext } from "../album-context";
 
-type AlbumDetailsLinkProps = {
-	album: AlbumDoc;
-};
+export const AlbumDetailsLink = () => {
+	const { album } = useAlbumContext();
 
-export const AlbumDetailsLink = ({ album }: AlbumDetailsLinkProps) => {
 	const details = album.release || (album.sid && albumReleaseHref(album.sid));
 
 	if (!details) {
