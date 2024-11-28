@@ -1,3 +1,4 @@
+import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { api } from "convex/_generated/api";
 import * as v from "valibot";
@@ -16,6 +17,21 @@ export const getSessionCookie = createServerFn({ method: "GET" })
 	.handler(() => {
 		return getSessionJwtToken();
 	});
+
+export const getUser = createServerFn({ method: "GET" })
+	.middleware([convexMiddleware])
+	.handler(async ({ context }) => {
+		const user = await context.convexClient.query(api.auth.queryAuthUser);
+
+		return user && { ...user, _id: user._id as string };
+	});
+
+export const getUserQueryOptions = () => {
+	return queryOptions({
+		queryKey: ["user"],
+		queryFn: () => getUser(),
+	});
+};
 
 export const signInMutation = createServerFn({ method: "POST" })
 	.middleware([convexMiddleware])
