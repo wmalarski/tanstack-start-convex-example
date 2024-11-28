@@ -119,3 +119,12 @@ export const patchReviewMutation = createServerFn({ method: "POST" })
 			reviewId: data.reviewId as Id<"review">,
 		}),
 	);
+
+export const removeReviewMutation = createServerFn({ method: "POST" })
+	.middleware([convexAuthorizedMiddleware])
+	.validator(v.object({ reviewId: v.string() }))
+	.handler(async ({ context, data }) =>
+		context.convexClient.mutation(api.reviews.deleteReviewMutation, {
+			reviewId: data.reviewId as Id<"review">,
+		}),
+	);
