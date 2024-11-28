@@ -74,7 +74,7 @@ export const getArtistReviewsQueryOptions = ({
 }: GetArtistReviewsQueryOptionsArgs) => {
 	return infiniteQueryOptions({
 		...paginationPageParamOptions,
-		queryKey: ["artist-reviews"],
+		queryKey: ["artist-reviews", albumId],
 		queryFn: ({ pageParam }) =>
 			getArtistReviews({
 				data: {
@@ -120,7 +120,7 @@ export const patchReviewMutation = createServerFn({ method: "POST" })
 		}),
 	);
 
-export const removeReviewMutation = createServerFn({ method: "POST" })
+export const deleteReviewMutation = createServerFn({ method: "POST" })
 	.middleware([convexAuthorizedMiddleware])
 	.validator(v.object({ reviewId: v.string() }))
 	.handler(async ({ context, data }) =>

@@ -1,6 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import type { BookmarkDoc } from "convex/utils";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -14,24 +12,31 @@ import {
 } from "~/ui/alert-dialog";
 import { Button } from "~/ui/button";
 import {
-	deleteBookmarkMutation,
-	getBookmarkQueryOptions,
-} from "../../server/bookmarks";
+	deleteReviewMutation,
+	getAllReviewsQueryOptions,
+	getArtistReviewsQueryOptions,
+} from "../../server/reviews";
+import { useReviewContext } from "../review-context";
 
-type DeleteBookmarkAlertProps = {
-	bookmark: BookmarkDoc;
-};
+export const DeleteReviewAlert = () => {
+	const { review } = useReviewContext();
 
-export const DeleteBookmarkAlert = ({ bookmark }: DeleteBookmarkAlertProps) => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return deleteBookmarkMutation({ data: { bookmarkId: bookmark._id } });
+			return deleteReviewMutation({ data: { reviewId: review._id } });
 		},
 		onSuccess: async () => {
-			const options = getBookmarkQueryOptions({ albumId: bookmark.albumId });
-			await queryClient.invalidateQueries({ queryKey: options.queryKey });
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: getAllReviewsQueryOptions().queryKey,
+				}),
+				queryClient.invalidateQueries({
+					queryKey: getArtistReviewsQueryOptions({ albumId: review.albumId })
+						.queryKey,
+				}),
+			]);
 		},
 	});
 
