@@ -43,7 +43,7 @@ export const queryBookmark = query({
 			)
 			.first();
 
-		return bookmark as BookmarkDoc;
+		return bookmark as BookmarkDoc | null;
 	},
 });
 

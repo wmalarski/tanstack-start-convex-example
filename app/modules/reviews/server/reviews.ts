@@ -62,7 +62,10 @@ const getArtistReviews = createServerFn({ method: "GET" })
 		v.object({ paginationOpts: paginationSchema, albumId: v.string() }),
 	)
 	.handler(async ({ context, data }) =>
-		context.convexClient.query(api.reviews.queryReviews, data),
+		context.convexClient.query(api.reviews.queryReviewsByArtistAlbumId, {
+			...data,
+			albumId: data.albumId as Id<"album">,
+		}),
 	);
 
 type GetArtistReviewsQueryOptionsArgs = {

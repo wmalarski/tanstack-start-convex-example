@@ -51,7 +51,10 @@ export const getBookmarkQueryOptions = ({
 }: GetBookmarkQueryOptionsArgs) => {
 	return queryOptions({
 		queryKey: ["bookmark", albumId],
-		queryFn: () => getBookmark({ data: { albumId } }),
+		queryFn: async () => {
+			const bookmark = await getBookmark({ data: { albumId } });
+			return bookmark ?? null;
+		},
 	});
 };
 
