@@ -16,13 +16,13 @@ export const getSessionJwtToken = async (convexClient: ConvexHttpClient) => {
 	const event = getEvent();
 
 	const jwtToken = getCookie(event, JWT_TOKEN_COOKIE_NAME);
-	console.log("getSessionJwtToken-jwtToken", jwtToken);
+	console.log("getSessionJwtToken-jwtToken", Boolean(jwtToken));
 	if (jwtToken) {
 		return jwtToken;
 	}
 
 	const refreshToken = getCookie(event, REFRESH_TOKEN_COOKIE_NAME);
-	console.log("getSessionJwtToken-refreshToken", refreshToken);
+	console.log("getSessionJwtToken-refreshToken", Boolean(refreshToken));
 	if (!refreshToken) {
 		return null;
 	}

@@ -11,7 +11,10 @@ export const AlbumDetailsLink = () => {
 	}
 
 	return (
-		<a className={buttonVariants()} href={details}>
+		<a
+			className={buttonVariants({ size: "sm", variant: "outline" })}
+			href={details}
+		>
 			Details
 		</a>
 	);

@@ -11,5 +11,9 @@ export const AlbumGoogleButton = () => {
 		window.open(link, "_blank");
 	};
 
-	return <Button onClick={onClick}>Google</Button>;
+	return (
+		<Button variant="outline" size="sm" onClick={onClick}>
+			Google
+		</Button>
+	);
 };

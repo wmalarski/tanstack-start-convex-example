@@ -25,7 +25,7 @@ export const AlbumCard = ({ data }: AlbumCardProps) => {
 	return (
 		<li>
 			<AlbumContextProvider {...data}>
-				<Card className="relative">
+				<Card className="relative flex h-full flex-col">
 					<Link
 						to="/albums/$albumId"
 						params={{ albumId: data.album._id }}
@@ -35,10 +35,10 @@ export const AlbumCard = ({ data }: AlbumCardProps) => {
 					<CardHeader>
 						<CardTitle>{formatAlbumTitle(data)}</CardTitle>
 					</CardHeader>
-					<CardContent>
+					<CardContent className="grow">
 						<AlbumCoversCarousel size="s250" />
 					</CardContent>
-					<CardFooter>
+					<CardFooter className="z-10">
 						<AlbumActions />
 					</CardFooter>
 				</Card>

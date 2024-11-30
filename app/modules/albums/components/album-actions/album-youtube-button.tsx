@@ -11,5 +11,9 @@ export const AlbumYoutubeButton = () => {
 		window.open(link, "_blank");
 	};
 
-	return <Button onClick={onClick}>YT</Button>;
+	return (
+		<Button variant="outline" size="sm" onClick={onClick}>
+			YT
+		</Button>
+	);
 };

@@ -5,11 +5,9 @@ import { getRandomAlbumsQueryOptions } from "~/modules/albums/server/albums";
 
 const RouteComponent = () => {
 	return (
-		<div className="p-2">
-			<Suspense>
-				<RandomAlbumsList />
-			</Suspense>
-		</div>
+		<Suspense>
+			<RandomAlbumsList />
+		</Suspense>
 	);
 };
 

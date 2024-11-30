@@ -4,7 +4,7 @@ import { buttonVariants } from "~/ui/button";
 
 export const TopNavbar = () => {
 	return (
-		<nav>
+		<nav className="mx-auto flex w-full max-w-4xl justify-between gap-2 p-2">
 			<ul className="flex gap-2 p-1">
 				<li>
 					<Link to="/" className={buttonVariants({ variant: "ghost" })}>
@@ -32,10 +32,8 @@ export const TopNavbar = () => {
 						Reviews
 					</Link>
 				</li>
-				<li>
-					<SignOutButton />
-				</li>
 			</ul>
+			<SignOutButton />
 		</nav>
 	);
 };
