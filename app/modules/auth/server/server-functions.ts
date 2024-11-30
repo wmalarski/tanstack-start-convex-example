@@ -6,16 +6,12 @@ import {
 	convexAuthorizedMiddleware,
 	convexMiddleware,
 } from "~/modules/common/server/middleware";
-import {
-	clearSessionTokens,
-	getSessionJwtToken,
-	setSessionTokens,
-} from "./session";
+import { clearSessionTokens, setSessionTokens } from "./session";
 
 export const getSessionCookie = createServerFn({ method: "GET" })
 	.middleware([convexMiddleware])
-	.handler(() => {
-		return getSessionJwtToken();
+	.handler(({ context }) => {
+		return context.authToken;
 	});
 
 export const getUser = createServerFn({ method: "GET" })

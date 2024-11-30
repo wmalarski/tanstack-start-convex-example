@@ -1,13 +1,39 @@
+import { api } from "convex/_generated/api";
+import type { ConvexHttpClient } from "convex/browser";
 import { deleteCookie, getCookie, getEvent, setCookie } from "vinxi/http";
 
 const JWT_TOKEN_COOKIE_NAME = "__convexAuthJWT";
 const REFRESH_TOKEN_COOKIE_NAME = "__convexAuthRefresh";
 
 const BASE_COOKIE_OPTIONS = { path: "/", secure: import.meta.env.PROD };
-const COOKIE_OPTIONS = { ...BASE_COOKIE_OPTIONS, maxAge: 60 * 60 * 24 * 7 };
+const TOKEN_COOKIE_OPTIONS = { ...BASE_COOKIE_OPTIONS, maxAge: 60 * 60 };
+const REFRESH_COOKIE_OPTIONS = {
+	...BASE_COOKIE_OPTIONS,
+	maxAge: 60 * 60 * 24 * 7,
+};
 
-export const getSessionJwtToken = () => {
-	return getCookie(getEvent(), JWT_TOKEN_COOKIE_NAME);
+export const getSessionJwtToken = async (convexClient: ConvexHttpClient) => {
+	const event = getEvent();
+
+	const jwtToken = getCookie(event, JWT_TOKEN_COOKIE_NAME);
+	console.log("getSessionJwtToken-jwtToken", jwtToken);
+	if (jwtToken) {
+		return jwtToken;
+	}
+
+	const refreshToken = getCookie(event, REFRESH_TOKEN_COOKIE_NAME);
+	console.log("getSessionJwtToken-refreshToken", refreshToken);
+	if (!refreshToken) {
+		return null;
+	}
+
+	const response = await convexClient.action(api.auth.signIn, { refreshToken });
+	console.log("getSessionJwtToken-response", response);
+	if (response.tokens) {
+		setSessionTokens(response.tokens);
+	}
+
+	return response.tokens?.token;
 };
 
 type SetSessionTokensArgs = {
@@ -17,12 +43,12 @@ type SetSessionTokensArgs = {
 
 export const setSessionTokens = (tokens: SetSessionTokensArgs) => {
 	const event = getEvent();
-	setCookie(event, JWT_TOKEN_COOKIE_NAME, tokens.token, COOKIE_OPTIONS);
+	setCookie(event, JWT_TOKEN_COOKIE_NAME, tokens.token, TOKEN_COOKIE_OPTIONS);
 	setCookie(
 		event,
 		REFRESH_TOKEN_COOKIE_NAME,
 		tokens.refreshToken,
-		COOKIE_OPTIONS,
+		REFRESH_COOKIE_OPTIONS,
 	);
 };
 
