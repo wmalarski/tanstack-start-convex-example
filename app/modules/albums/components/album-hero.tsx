@@ -16,8 +16,8 @@ export const AlbumHero = ({ albumId }: AlbumHeroProps) => {
 
 	return (
 		<AlbumContextProvider {...albumQuery.data}>
-			<div>
-				<h1>{formatAlbumTitle(albumQuery.data)}</h1>
+			<div className="mx-auto flex max-w-4xl flex-col gap-2 px-2">
+				<h1 className="text-3xl">{formatAlbumTitle(albumQuery.data)}</h1>
 				<AlbumCoversCarousel size="large" />
 				<AlbumActions />
 				<Suspense>

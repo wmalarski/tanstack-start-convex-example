@@ -7,11 +7,9 @@ const RouteComponent = () => {
 	const params = useParams({ from: "/albums/$albumId/review/$reviewId" });
 
 	return (
-		<div>
-			<Suspense>
-				<EditReviewForm reviewId={params.reviewId} />
-			</Suspense>
-		</div>
+		<Suspense>
+			<EditReviewForm reviewId={params.reviewId} />
+		</Suspense>
 	);
 };
 

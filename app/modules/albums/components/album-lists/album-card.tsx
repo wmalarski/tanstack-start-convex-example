@@ -7,10 +7,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/ui/card";
-import { formatAlbumTitle } from "../utils/format";
-import { AlbumActions } from "./album-actions/album-actions";
-import { AlbumContextProvider } from "./album-context";
-import { AlbumCoversCarousel } from "./album-covers-carousel";
+import { formatAlbumTitle } from "../../utils/format";
+import { AlbumActions } from "../album-actions/album-actions";
+import { AlbumContextProvider } from "../album-context";
+import { AlbumCoversCarousel } from "../album-covers-carousel";
 
 export type AlbumCardData = {
 	artist: ArtistDoc;
