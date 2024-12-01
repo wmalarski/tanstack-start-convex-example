@@ -25,5 +25,9 @@ export const CreateBookmarkButton = () => {
 		mutation.mutate();
 	};
 
-	return <Button onClick={onClick}>Add bookmark</Button>;
+	return (
+		<Button hasLoader={mutation.isPending} onClick={onClick}>
+			Add bookmark
+		</Button>
+	);
 };

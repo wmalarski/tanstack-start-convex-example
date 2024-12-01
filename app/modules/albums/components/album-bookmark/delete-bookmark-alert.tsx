@@ -54,8 +54,10 @@ export const DeleteBookmarkAlert = ({ bookmark }: DeleteBookmarkAlertProps) => {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction onClick={onContinueClick}>
-						Continue
+					<AlertDialogAction asChild>
+						<Button hasLoader={mutation.isPending} onClick={onContinueClick}>
+							Continue
+						</Button>
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

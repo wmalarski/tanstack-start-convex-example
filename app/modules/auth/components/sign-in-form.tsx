@@ -29,7 +29,9 @@ export const SignInForm = () => {
 
 			<AuthFields />
 
-			<Button type="submit">Sign in</Button>
+			<Button hasLoader={mutation.isPending} type="submit">
+				Sign in
+			</Button>
 			<Link to="/auth/sign-up" className={buttonVariants()}>
 				Sign up instead
 			</Link>

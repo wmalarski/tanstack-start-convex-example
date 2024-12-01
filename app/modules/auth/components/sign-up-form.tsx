@@ -27,7 +27,9 @@ export const SignUpForm = () => {
 		<form onSubmit={onSubmit} className="flex flex-col gap-2">
 			<input name="flow" type="hidden" value="signUp" />
 			<AuthFields />
-			<Button type="submit">Sign up</Button>
+			<Button hasLoader={mutation.isPending} type="submit">
+				Sign up
+			</Button>
 			<Link to="/auth/sign-in" className={buttonVariants()}>
 				Sign in instead
 			</Link>

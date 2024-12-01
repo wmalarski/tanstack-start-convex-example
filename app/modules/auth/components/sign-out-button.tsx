@@ -19,5 +19,9 @@ export const SignOutButton = () => {
 		mutation.mutate();
 	};
 
-	return <Button onClick={onSignOutClick}>Sign Out</Button>;
+	return (
+		<Button hasLoader={mutation.isPending} onClick={onSignOutClick}>
+			Sign Out
+		</Button>
+	);
 };

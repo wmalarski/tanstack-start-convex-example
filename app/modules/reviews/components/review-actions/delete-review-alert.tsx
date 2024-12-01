@@ -59,8 +59,10 @@ export const DeleteReviewAlert = () => {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction onClick={onContinueClick}>
-						Continue
+					<AlertDialogAction asChild>
+						<Button onClick={onContinueClick} hasLoader={mutation.isPending}>
+							Continue
+						</Button>
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

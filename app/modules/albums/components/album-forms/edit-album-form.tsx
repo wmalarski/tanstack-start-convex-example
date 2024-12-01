@@ -42,7 +42,9 @@ export const EditAlbumForm = ({ albumId }: EditAlbumFormProps) => {
 
 			<AlbumFields initial={albumQuery.data.album} />
 
-			<Button type="submit">Save album</Button>
+			<Button hasLoader={mutation.isPending} type="submit">
+				Save album
+			</Button>
 		</form>
 	);
 };
