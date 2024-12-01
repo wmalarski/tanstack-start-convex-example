@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { decode } from "decode-formdata";
 import type { ComponentProps } from "react";
 import { Button, buttonVariants } from "~/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "~/ui/card";
 import { signInMutation } from "../server/server-functions";
 import { AuthFields } from "./auth-fields";
 
@@ -24,16 +25,27 @@ export const SignUpForm = () => {
 	};
 
 	return (
-		<form onSubmit={onSubmit} className="flex flex-col gap-2">
+		<form onSubmit={onSubmit} className="mx-auto w-full max-w-lg">
 			<input name="flow" type="hidden" value="signUp" />
-			<AuthFields />
-			<Button hasLoader={mutation.isPending} type="submit">
-				Sign up
-			</Button>
-			<Link to="/auth/sign-in" className={buttonVariants()}>
-				Sign in instead
-			</Link>
-			<Link to="/">Back</Link>
+			<Card className="flex flex-col gap-2">
+				<CardHeader className="text-2xl">Sign Up</CardHeader>
+
+				<CardContent>
+					<AuthFields />
+				</CardContent>
+
+				<CardFooter className="flex flex-col gap-2">
+					<Button hasLoader={mutation.isPending} type="submit" size="lg">
+						Sign up
+					</Button>
+					<Link
+						to="/auth/sign-in"
+						className={buttonVariants({ variant: "link", size: "sm" })}
+					>
+						Sign in instead
+					</Link>
+				</CardFooter>
+			</Card>
 		</form>
 	);
 };

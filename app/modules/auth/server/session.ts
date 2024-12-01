@@ -16,19 +16,16 @@ export const getSessionJwtToken = async (convexClient: ConvexHttpClient) => {
 	const event = getEvent();
 
 	const jwtToken = getCookie(event, JWT_TOKEN_COOKIE_NAME);
-	console.log("getSessionJwtToken-jwtToken", Boolean(jwtToken));
 	if (jwtToken) {
 		return jwtToken;
 	}
 
 	const refreshToken = getCookie(event, REFRESH_TOKEN_COOKIE_NAME);
-	console.log("getSessionJwtToken-refreshToken", Boolean(refreshToken));
 	if (!refreshToken) {
 		return null;
 	}
 
 	const response = await convexClient.action(api.auth.signIn, { refreshToken });
-	console.log("getSessionJwtToken-response", response);
 	if (response.tokens) {
 		setSessionTokens(response.tokens);
 	}

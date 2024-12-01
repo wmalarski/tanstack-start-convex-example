@@ -38,7 +38,7 @@ export const AlbumCard = ({ data }: AlbumCardProps) => {
 					<CardContent className="grow">
 						<AlbumCoversCarousel size="s250" />
 					</CardContent>
-					<CardFooter className="z-10">
+					<CardFooter>
 						<AlbumActions />
 					</CardFooter>
 				</Card>
