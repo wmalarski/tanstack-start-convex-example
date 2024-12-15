@@ -14,6 +14,13 @@ export const getSessionCookie = createServerFn({ method: "GET" })
 		return context.authToken;
 	});
 
+export const getSessionQueryOptions = () => {
+	return queryOptions({
+		queryKey: ["session"],
+		queryFn: () => getSessionCookie(),
+	});
+};
+
 export const getUser = createServerFn({ method: "GET" })
 	.middleware([convexMiddleware])
 	.handler(async ({ context }) => {

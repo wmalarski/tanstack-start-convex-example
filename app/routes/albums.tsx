@@ -1,5 +1,5 @@
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { getSessionCookie } from "~/modules/auth/server/server-functions";
+import { getSessionQueryOptions } from "~/modules/auth/server/server-functions";
 import { TopNavbar } from "~/modules/common/components/top-navbar";
 
 const RouteComponent = () => {
@@ -13,8 +13,11 @@ const RouteComponent = () => {
 
 export const Route = createFileRoute("/albums")({
 	component: RouteComponent,
-	beforeLoad: async () => {
-		const token = await getSessionCookie();
+	beforeLoad: async ({ context }) => {
+		const token = await context.queryClient.ensureQueryData(
+			getSessionQueryOptions(),
+		);
+
 		if (!token) {
 			throw redirect({ to: "/auth/sign-in" });
 		}
