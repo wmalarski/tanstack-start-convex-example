@@ -1,4 +1,8 @@
-import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
+import {
+	infiniteQueryOptions,
+	type QueryClient,
+	queryOptions,
+} from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
@@ -17,19 +21,24 @@ const getRandomAlbums = createServerFn({ method: "GET" })
 		context.convexClient.query(api.albums.queryRandomAlbums, data),
 	);
 
-export const getRandomAlbumsQueryOptions = () => {
+export const getRandomAlbumsQueryOptions = (queryClient: QueryClient) => {
 	return infiniteQueryOptions({
 		...paginationPageParamOptions,
 		queryKey: ["random-albums"],
-		queryFn: ({ pageParam }) =>
-			getRandomAlbums({
+		queryFn: async ({ pageParam }) => {
+			const results = await getRandomAlbums({
 				data: {
 					paginationOpts: {
 						cursor: pageParam,
 						numItems: DEFAULT_PAGE_SIZE,
 					},
 				},
-			}),
+			});
+
+			setAlbumsQueryData(queryClient, results.page);
+
+			return results;
+		},
 	});
 };
 
@@ -47,16 +56,18 @@ const getArtistAlbums = createServerFn({ method: "GET" })
 
 type GetArtistAlbumsQueryOptionsArgs = {
 	albumId: string;
+	queryClient: QueryClient;
 };
 
-export const getArtistAlbumsQueryOptions = (
-	args: GetArtistAlbumsQueryOptionsArgs,
-) => {
+export const getArtistAlbumsQueryOptions = ({
+	queryClient,
+	...args
+}: GetArtistAlbumsQueryOptionsArgs) => {
 	return infiniteQueryOptions({
 		...paginationPageParamOptions,
 		queryKey: ["artist-albums"],
-		queryFn: ({ pageParam }) =>
-			getArtistAlbums({
+		queryFn: async ({ pageParam }) => {
+			const results = await getArtistAlbums({
 				data: {
 					...args,
 					paginationOpts: {
@@ -64,7 +75,12 @@ export const getArtistAlbumsQueryOptions = (
 						numItems: DEFAULT_PAGE_SIZE,
 					},
 				},
-			}),
+			});
+
+			setAlbumsQueryData(queryClient, results.page);
+
+			return results;
+		},
 	});
 };
 
@@ -77,16 +93,18 @@ const getSearchAlbums = createServerFn({ method: "GET" })
 
 type GetSearchAlbumsQueryOptionsArgs = {
 	term: string;
+	queryClient: QueryClient;
 };
 
-export const getSearchAlbumsQueryOptions = (
-	args: GetSearchAlbumsQueryOptionsArgs,
-) => {
+export const getSearchAlbumsQueryOptions = ({
+	queryClient,
+	...args
+}: GetSearchAlbumsQueryOptionsArgs) => {
 	return infiniteQueryOptions({
 		...paginationPageParamOptions,
 		queryKey: ["search-albums"],
-		queryFn: ({ pageParam }) =>
-			getSearchAlbums({
+		queryFn: async ({ pageParam }) => {
+			const results = await getSearchAlbums({
 				data: {
 					...args,
 					paginationOpts: {
@@ -94,7 +112,12 @@ export const getSearchAlbumsQueryOptions = (
 						numItems: DEFAULT_PAGE_SIZE,
 					},
 				},
-			}),
+			});
+
+			setAlbumsQueryData(queryClient, results.page);
+
+			return results;
+		},
 	});
 };
 
@@ -107,6 +130,8 @@ const getAlbum = createServerFn({ method: "GET" })
 		}),
 	);
 
+type GetAlbumResult = Awaited<ReturnType<typeof getAlbum>>;
+
 type GetAlbumQueryOptionsArgs = {
 	albumId: string;
 };
@@ -116,6 +141,18 @@ export const getAlbumQueryOptions = (args: GetAlbumQueryOptionsArgs) => {
 		queryKey: ["album", args.albumId],
 		queryFn: () => getAlbum({ data: args }),
 	});
+};
+
+const setAlbumsQueryData = (
+	queryClient: QueryClient,
+	results: GetAlbumResult[],
+) => {
+	for (const result of results) {
+		queryClient.setQueryData(
+			getAlbumQueryOptions({ albumId: result.album._id }).queryKey,
+			result,
+		);
+	}
 };
 
 export const patchAlbumMutation = createServerFn({ method: "POST" })

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/albums/")({
 	component: RouteComponent,
 	loader: async ({ context }) => {
 		await context.queryClient.ensureInfiniteQueryData(
-			getRandomAlbumsQueryOptions(),
+			getRandomAlbumsQueryOptions(context.queryClient),
 		);
 	},
 });

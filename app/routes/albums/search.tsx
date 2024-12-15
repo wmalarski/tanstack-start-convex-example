@@ -15,7 +15,10 @@ export const Route = createFileRoute("/albums/search")({
 	loaderDeps: ({ search: { term } }) => ({ term }),
 	loader: async ({ context, deps }) => {
 		await context.queryClient.ensureInfiniteQueryData(
-			getSearchAlbumsQueryOptions(deps),
+			getSearchAlbumsQueryOptions({
+				...deps,
+				queryClient: context.queryClient,
+			}),
 		);
 	},
 });

@@ -1,9 +1,15 @@
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import {
+	useQueryClient,
+	useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 import { getRandomAlbumsQueryOptions } from "../../server/albums";
 import { AlbumsList } from "./albums-list";
 
 export const RandomAlbumsList = () => {
-	const albumsQuery = useSuspenseInfiniteQuery(getRandomAlbumsQueryOptions());
+	const queryClient = useQueryClient();
+	const albumsQuery = useSuspenseInfiniteQuery(
+		getRandomAlbumsQueryOptions(queryClient),
+	);
 	const albums = albumsQuery.data.pages.flatMap(({ page }) => page);
 
 	return (

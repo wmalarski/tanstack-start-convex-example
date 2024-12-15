@@ -1,4 +1,7 @@
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import {
+	useQueryClient,
+	useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 
 import { getArtistAlbumsQueryOptions } from "../../server/albums";
 import { AlbumsList } from "./albums-list";
@@ -8,9 +11,12 @@ type ArtistAlbumsListProps = {
 };
 
 export const ArtistAlbumsList = ({ albumId }: ArtistAlbumsListProps) => {
+	const queryClient = useQueryClient();
+
 	const albumsQuery = useSuspenseInfiniteQuery(
-		getArtistAlbumsQueryOptions({ albumId }),
+		getArtistAlbumsQueryOptions({ albumId, queryClient }),
 	);
+
 	const albums = albumsQuery.data.pages.flatMap(({ page }) => page);
 
 	return (
